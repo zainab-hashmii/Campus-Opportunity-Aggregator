@@ -309,5 +309,6 @@ npm install
 
 ## License
 
-This project was developed for academic purposes as part of the Web Technologies and Advanced Database Management Systems courses.#   C a m p u s - O p p o r t u n i t y - A g g r e g a t o r  
+This project was developed for academic purposes as part of the Web Technologies and Advanced Database Management Systems courses.#   C a m p u s - O p p o r t u n i t y - A g g r e g a t o r 
+ 
  
