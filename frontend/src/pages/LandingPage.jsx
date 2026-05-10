@@ -4,34 +4,40 @@ import { Link, useNavigate } from 'react-router-dom';
 // ── Slideshow data ──────────────────────────────────────────────────────────
 const SLIDES = [
     {
-        image:   'https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1920&q=80',
-        badge:   'Internships & Industry Experience',
-        tagline: 'Google, Microsoft, Careem & 20+ top employers — actively recruiting NUST students right now.',
+        image:   'https://images.unsplash.com/photo-1562774053-701939374585?auto=format&fit=crop&w=1920&q=80',
+        badge:   'World-Class Universities',
+        label:   'Stanford University, USA',
+        tagline: 'Research fellowships, exchange programs & summer schools at Stanford, MIT & Caltech — open to NUST students.',
     },
     {
-        image:   'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=1920&q=80',
-        badge:   'Hackathons & Competitions',
-        tagline: 'Win up to PKR 500,000 in prizes — and the portfolio, skills, and network to match.',
+        image:   'https://images.unsplash.com/photo-1573804633927-bfcbcd909acd?auto=format&fit=crop&w=1920&q=80',
+        badge:   'Internships at Tech Giants',
+        label:   'Google · Microsoft · Meta',
+        tagline: 'Google, Microsoft, Meta & 20+ world-leading tech companies actively recruiting NUST students right now.',
+    },
+    {
+        image:   'https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&fit=crop&w=1920&q=80',
+        badge:   'Prestigious Scholarships',
+        label:   'University of Oxford, UK',
+        tagline: 'Fully-funded Oxford, Cambridge & TU Munich seats — exclusively for Pakistan\'s brightest students.',
+    },
+    {
+        image:   'https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&w=1920&q=80',
+        badge:   'Ivy League Opportunities',
+        label:   'Harvard University, USA',
+        tagline: 'Harvard summer schools, research attachments & Ivy League leadership programs — apply before seats run out.',
+    },
+    {
+        image:   'https://images.unsplash.com/photo-1497366412874-3415097a27e7?auto=format&fit=crop&w=1920&q=80',
+        badge:   'Corporate & Industry Exposure',
+        label:   'Amazon · McKinsey · Careem',
+        tagline: 'Fortune 500 companies & top local employers recruiting NUST talent — all in one verified listing.',
     },
     {
         image:   'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=1920&q=80',
-        badge:   'Scholarships & Fellowships',
-        tagline: 'Fully-funded seats at TU Munich, Kyoto & Oxford — waiting for Pakistan\'s most driven students.',
-    },
-    {
-        image:   'https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&w=1920&q=80',
-        badge:   'Career Fairs & Networking',
-        tagline: 'Skip the cold emails. Meet hiring managers from 50+ companies — at a single verified listing.',
-    },
-    {
-        image:   'https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1920&q=80',
-        badge:   'Research & Innovation',
-        tagline: 'Get paid to publish. Join NUST labs, UNESCO grants & international research teams.',
-    },
-    {
-        image:   'https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=1920&q=80',
-        badge:   'Exchange Programs & Study Abroad',
-        tagline: 'One semester in Germany, Japan, or Korea — with a scholarship that covers everything.',
+        badge:   'Hackathons & Competitions',
+        label:   'Build · Compete · Win',
+        tagline: 'Win up to PKR 500,000 in prizes — and the portfolio, network, and career momentum to match.',
     },
 ];
 
@@ -125,8 +131,6 @@ export default function LandingPage() {
     }, [slide]);
 
     function goTo(i)  { setSlide(i); resetTimer(); }
-    function prev()   { goTo((slide - 1 + SLIDES.length) % SLIDES.length); }
-    function next()   { goTo((slide + 1) % SLIDES.length); }
 
     // Scroll-section hooks
     const [statsRef,  statsVisible]  = useVisible(0.2);
@@ -161,7 +165,7 @@ export default function LandingPage() {
                 {/* ── Dark gradient overlay ── */}
                 <div style={{
                     position: 'absolute', inset: 0,
-                    background: 'linear-gradient(105deg, rgba(17,27,52,0.94) 0%, rgba(20,32,64,0.82) 55%, rgba(20,32,64,0.55) 100%)',
+                    background: 'linear-gradient(105deg, rgba(15,14,43,0.96) 0%, rgba(30,27,75,0.86) 55%, rgba(49,46,129,0.60) 100%)',
                     zIndex: 1,
                 }} />
 
@@ -172,52 +176,6 @@ export default function LandingPage() {
                 <div className="hero-shape hero-shape-1" style={{ zIndex: 2 }} />
                 <div className="hero-shape hero-shape-2" style={{ zIndex: 2 }} />
                 <div className="hero-shape hero-shape-3" style={{ zIndex: 2 }} />
-
-                {/* ── LEFT ARROW ── */}
-                <button
-                    onClick={prev}
-                    aria-label="Previous slide"
-                    style={{
-                        position: 'absolute', left: 20, top: '50%',
-                        transform: 'translateY(-50%)',
-                        zIndex: 10,
-                        width: 46, height: 46, borderRadius: '50%',
-                        background: 'rgba(255,255,255,0.10)',
-                        border: '1px solid rgba(255,255,255,0.22)',
-                        color: '#fff', cursor: 'pointer',
-                        display: 'flex', alignItems: 'center', justifyContent: 'center',
-                        backdropFilter: 'blur(8px)',
-                        fontSize: '1.3rem', fontWeight: 300,
-                        transition: 'background 0.2s',
-                    }}
-                    onMouseEnter={e => e.currentTarget.style.background = 'rgba(255,255,255,0.20)'}
-                    onMouseLeave={e => e.currentTarget.style.background = 'rgba(255,255,255,0.10)'}
-                >
-                    ‹
-                </button>
-
-                {/* ── RIGHT ARROW ── */}
-                <button
-                    onClick={next}
-                    aria-label="Next slide"
-                    style={{
-                        position: 'absolute', right: 20, top: '50%',
-                        transform: 'translateY(-50%)',
-                        zIndex: 10,
-                        width: 46, height: 46, borderRadius: '50%',
-                        background: 'rgba(255,255,255,0.10)',
-                        border: '1px solid rgba(255,255,255,0.22)',
-                        color: '#fff', cursor: 'pointer',
-                        display: 'flex', alignItems: 'center', justifyContent: 'center',
-                        backdropFilter: 'blur(8px)',
-                        fontSize: '1.3rem', fontWeight: 300,
-                        transition: 'background 0.2s',
-                    }}
-                    onMouseEnter={e => e.currentTarget.style.background = 'rgba(255,255,255,0.20)'}
-                    onMouseLeave={e => e.currentTarget.style.background = 'rgba(255,255,255,0.10)'}
-                >
-                    ›
-                </button>
 
                 {/* ── HERO CONTENT ── */}
                 <div className="max-w-7xl mx-auto px-6 w-full" style={{
@@ -234,37 +192,46 @@ export default function LandingPage() {
                         }}>
                             <div style={{
                                 display: 'inline-flex', alignItems: 'center', gap: 8,
-                                background: 'rgba(245,158,11,0.14)',
-                                border: '1px solid rgba(245,158,11,0.30)',
+                                background: 'rgba(167,139,250,0.15)',
+                                border: '1px solid rgba(167,139,250,0.32)',
                                 borderRadius: 100, padding: '6px 16px',
-                                marginBottom: 28,
+                                marginBottom: 14,
                             }}>
                                 <span className="pulse-dot" style={{
                                     width: 7, height: 7, borderRadius: '50%',
-                                    background: '#fbbf24', display: 'block', flexShrink: 0,
+                                    background: '#a78bfa', display: 'block', flexShrink: 0,
                                 }} />
                                 <span style={{
-                                    fontSize: '0.72rem', color: '#fbbf24',
+                                    fontSize: '0.72rem', color: '#a78bfa',
                                     fontWeight: 600, letterSpacing: '0.07em', textTransform: 'uppercase',
                                 }}>
                                     {SLIDES[slide].badge}
                                 </span>
+                            </div>
+                            <div style={{
+                                fontSize: '0.88rem', color: 'rgba(245,158,11,0.90)',
+                                fontWeight: 700, letterSpacing: '0.04em',
+                                marginBottom: 20,
+                                display: 'flex', alignItems: 'center', gap: 8,
+                            }}>
+                                <span style={{ color: '#fbbf24', fontSize: '1rem' }}>🏛</span>
+                                {SLIDES[slide].label}
                             </div>
                         </div>
 
                         {/* Static headline */}
                         <h1 className="fade-up fade-up-delay-1" style={{
                             fontFamily: "'Playfair Display', serif",
-                            fontSize: 'clamp(2.2rem, 5vw, 3.9rem)',
-                            fontWeight: 700,
+                            fontSize: 'clamp(2.3rem, 5.2vw, 4.1rem)',
+                            fontWeight: 800,
                             color: '#ffffff',
-                            lineHeight: 1.14,
+                            lineHeight: 1.12,
                             marginBottom: 20,
-                            letterSpacing: '-0.01em',
+                            letterSpacing: '-0.02em',
                         }}>
                             Your All-in-One Hub<br />
                             <span style={{
-                                background: 'linear-gradient(90deg, #fbbf24 0%, #f59e0b 100%)',
+                                background: 'linear-gradient(90deg, #a78bfa 0%, #fbbf24 100%)',
                                 WebkitBackgroundClip: 'text',
                                 WebkitTextFillColor: 'transparent',
                                 backgroundClip: 'text',
@@ -285,8 +252,8 @@ export default function LandingPage() {
 
                         {/* Dynamic tagline — changes per slide */}
                         <p style={{
-                            color: 'rgba(251,191,36,0.75)',
-                            fontSize: '0.88rem', fontWeight: 500,
+                            color: 'rgba(196,181,253,0.85)',
+                            fontSize: '0.92rem', fontWeight: 500,
                             marginBottom: 34, fontStyle: 'italic',
                             opacity: textVisible ? 1 : 0,
                             transition: 'opacity 0.55s ease 0.1s',
@@ -297,19 +264,20 @@ export default function LandingPage() {
                         {/* CTAs */}
                         <div className="fade-up fade-up-delay-3" style={{ display: 'flex', gap: 14, flexWrap: 'wrap', marginBottom: 44 }}>
                             <Link to="/opportunities" style={{
-                                background: 'linear-gradient(135deg, #4f46e5, #4338ca)',
-                                color: '#fff', padding: '13px 30px', borderRadius: 10,
-                                fontWeight: 700, fontSize: '0.93rem', textDecoration: 'none',
-                                boxShadow: '0 4px 18px rgba(79,70,229,0.42)', display: 'inline-block',
+                                background: 'linear-gradient(135deg, #7c3aed, #6d28d9)',
+                                color: '#fff', padding: '13px 32px', borderRadius: 12,
+                                fontWeight: 700, fontSize: '0.95rem', textDecoration: 'none',
+                                boxShadow: '0 4px 20px rgba(124,58,237,0.50)', display: 'inline-block',
+                                letterSpacing: '0.01em',
                             }}>
                                 Explore Opportunities →
                             </Link>
                             <Link to="/register" style={{
                                 background: 'rgba(255,255,255,0.09)', color: '#fff',
-                                padding: '13px 30px', borderRadius: 10,
-                                fontWeight: 600, fontSize: '0.93rem', textDecoration: 'none',
-                                border: '1px solid rgba(255,255,255,0.20)',
-                                backdropFilter: 'blur(8px)', display: 'inline-block',
+                                padding: '13px 32px', borderRadius: 12,
+                                fontWeight: 600, fontSize: '0.95rem', textDecoration: 'none',
+                                border: '1px solid rgba(167,139,250,0.30)',
+                                backdropFilter: 'blur(10px)', display: 'inline-block',
                             }}>
                                 Create Free Account
                             </Link>
@@ -320,11 +288,11 @@ export default function LandingPage() {
                             {['100+ Opportunities', 'Free to Join', 'NUST Exclusive'].map(badge => (
                                 <div key={badge} style={{
                                     display: 'flex', alignItems: 'center', gap: 7,
-                                    color: 'rgba(255,255,255,0.42)', fontSize: '0.8rem',
+                                    color: 'rgba(255,255,255,0.45)', fontSize: '0.8rem',
                                 }}>
                                     <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-                                        <circle cx="7" cy="7" r="7" fill="rgba(251,191,36,0.18)" />
-                                        <path d="M4 7l2 2 4-4" stroke="#fbbf24" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                                        <circle cx="7" cy="7" r="7" fill="rgba(167,139,250,0.20)" />
+                                        <path d="M4 7l2 2 4-4" stroke="#a78bfa" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                                     </svg>
                                     {badge}
                                 </div>
@@ -346,13 +314,16 @@ export default function LandingPage() {
                             onClick={() => goTo(i)}
                             aria-label={`Go to slide ${i + 1}`}
                             style={{
-                                width:  i === slide ? 28 : 8,
+                                width:  i === slide ? 32 : 8,
                                 height: 8,
                                 borderRadius: 4,
-                                background: i === slide ? '#fbbf24' : 'rgba(255,255,255,0.30)',
+                                background: i === slide
+                                    ? 'linear-gradient(90deg, #a78bfa, #7c3aed)'
+                                    : 'rgba(255,255,255,0.28)',
                                 border: 'none', cursor: 'pointer', padding: 0,
                                 transition: 'all 0.35s ease',
                                 flexShrink: 0,
+                                boxShadow: i === slide ? '0 0 10px rgba(167,139,250,0.5)' : 'none',
                             }}
                         />
                     ))}
@@ -381,7 +352,7 @@ export default function LandingPage() {
                         key={slide}
                         style={{
                             height: '100%',
-                            background: 'linear-gradient(90deg, #fbbf24, #f59e0b)',
+                            background: 'linear-gradient(90deg, #7c3aed, #a78bfa, #fbbf24)',
                             animation: `slideProgress ${SLIDE_DURATION}ms linear forwards`,
                         }}
                     />
@@ -389,7 +360,10 @@ export default function LandingPage() {
             </section>
 
             {/* ═══════════════════════════ STATS ═══════════════════════════ */}
-            <section ref={statsRef} style={{ background: '#ffffff', borderBottom: '1px solid #e5e7eb' }}>
+            <section ref={statsRef} style={{
+                background: 'linear-gradient(135deg, #0f0e2b 0%, #1e1b4b 100%)',
+                borderBottom: '1px solid rgba(167,139,250,0.15)',
+            }}>
                 <div className="max-w-7xl mx-auto px-6 py-16">
                     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: 32 }}>
                         {STATS.map((stat, i) => (
@@ -401,11 +375,16 @@ export default function LandingPage() {
                             }}>
                                 <div style={{
                                     fontFamily: "'Playfair Display', serif",
-                                    fontSize: '2.7rem', fontWeight: 700, color: '#1e2a4a', lineHeight: 1,
+                                    fontSize: '2.9rem', fontWeight: 800,
+                                    background: 'linear-gradient(135deg, #a78bfa, #fbbf24)',
+                                    WebkitBackgroundClip: 'text',
+                                    WebkitTextFillColor: 'transparent',
+                                    backgroundClip: 'text',
+                                    lineHeight: 1,
                                 }}>
                                     <Counter target={stat.value} suffix={stat.suffix} visible={statsVisible} />
                                 </div>
-                                <div style={{ color: '#9ca3af', fontSize: '0.82rem', marginTop: 9, fontWeight: 500 }}>
+                                <div style={{ color: 'rgba(196,181,253,0.70)', fontSize: '0.83rem', marginTop: 10, fontWeight: 500 }}>
                                     {stat.label}
                                 </div>
                             </div>
@@ -415,7 +394,7 @@ export default function LandingPage() {
             </section>
 
             {/* ═══════════════════════════ CATEGORIES ═══════════════════════════ */}
-            <section ref={catRef} style={{ background: '#f9fafb', padding: '84px 0' }}>
+            <section ref={catRef} style={{ background: '#f5f3ff', padding: '84px 0' }}>
                 <div className="max-w-7xl mx-auto px-6">
                     <SectionHeader
                         eyebrow="What We Offer"
@@ -446,21 +425,21 @@ export default function LandingPage() {
                                 transition: `opacity 0.55s ease ${i * 0.15}s, transform 0.55s ease ${i * 0.15}s`,
                             }}>
                                 <div style={{
-                                    fontSize: '0.7rem', fontWeight: 700, color: '#fbbf24',
+                                    fontSize: '0.7rem', fontWeight: 700, color: '#7c3aed',
                                     letterSpacing: '0.08em', marginBottom: 14, textTransform: 'uppercase',
                                 }}>
                                     Step {step.num}
                                 </div>
                                 <div style={{
-                                    width: 58, height: 58, borderRadius: 15,
-                                    background: 'linear-gradient(135deg, #1e2a4a, #2d3d6e)',
+                                    width: 62, height: 62, borderRadius: 16,
+                                    background: 'linear-gradient(135deg, #6d28d9, #7c3aed)',
                                     display: 'flex', alignItems: 'center', justifyContent: 'center',
                                     fontSize: 28, marginBottom: 20,
-                                    boxShadow: '0 6px 20px rgba(30,42,74,0.22)',
+                                    boxShadow: '0 8px 24px rgba(109,40,217,0.30)',
                                 }}>
                                     {step.icon}
                                 </div>
-                                <h3 style={{ fontWeight: 700, fontSize: '1.05rem', color: '#1a1f36', marginBottom: 9 }}>
+                                <h3 style={{ fontWeight: 700, fontSize: '1.07rem', color: '#1a1035', marginBottom: 9 }}>
                                     {step.title}
                                 </h3>
                                 <p style={{ fontSize: '0.87rem', color: '#6b7280', lineHeight: 1.68 }}>
@@ -474,11 +453,12 @@ export default function LandingPage() {
 
             {/* ═══════════════════════════ CTA BANNER ═══════════════════════════ */}
             <section ref={ctaRef} style={{
-                background: 'linear-gradient(135deg, #1a2540 0%, #2d3d6e 100%)',
-                padding: '80px 24px', position: 'relative', overflow: 'hidden',
+                background: 'linear-gradient(135deg, #0f0e2b 0%, #1e1b4b 50%, #312e81 100%)',
+                padding: '90px 24px', position: 'relative', overflow: 'hidden',
             }}>
-                <div style={{ position: 'absolute', top: -90, right: -90, width: 320, height: 320, borderRadius: '50%', background: 'rgba(245,158,11,0.06)', pointerEvents: 'none' }} />
-                <div style={{ position: 'absolute', bottom: -70, left: '18%', width: 220, height: 220, borderRadius: '50%', background: 'rgba(79,70,229,0.09)', pointerEvents: 'none' }} />
+                <div style={{ position: 'absolute', top: -100, right: -100, width: 380, height: 380, borderRadius: '50%', background: 'rgba(167,139,250,0.07)', pointerEvents: 'none' }} />
+                <div style={{ position: 'absolute', bottom: -80, left: '18%', width: 260, height: 260, borderRadius: '50%', background: 'rgba(245,158,11,0.06)', pointerEvents: 'none' }} />
+                <div style={{ position: 'absolute', top: '40%', right: '25%', width: 120, height: 120, borderRadius: '50%', background: 'rgba(124,58,237,0.08)', pointerEvents: 'none' }} />
                 <div className="max-w-3xl mx-auto text-center" style={{
                     position: 'relative', zIndex: 1,
                     opacity: ctaVisible ? 1 : 0,
@@ -487,32 +467,37 @@ export default function LandingPage() {
                 }}>
                     <h2 style={{
                         fontFamily: "'Playfair Display', serif",
-                        fontSize: 'clamp(1.7rem, 3.5vw, 2.5rem)',
-                        fontWeight: 700, color: '#ffffff', lineHeight: 1.22, marginBottom: 16,
+                        fontSize: 'clamp(1.8rem, 3.5vw, 2.6rem)',
+                        fontWeight: 800, color: '#ffffff', lineHeight: 1.2, marginBottom: 16,
                     }}>
                         Start Discovering<br />
-                        <span style={{ color: '#fbbf24' }}>Your Next Opportunity</span>
+                        <span style={{
+                            background: 'linear-gradient(90deg, #a78bfa, #fbbf24)',
+                            WebkitBackgroundClip: 'text',
+                            WebkitTextFillColor: 'transparent',
+                            backgroundClip: 'text',
+                        }}>Your Next Opportunity</span>
                     </h2>
                     <p style={{
-                        color: 'rgba(255,255,255,0.52)', fontSize: '0.98rem',
-                        lineHeight: 1.7, maxWidth: 440, margin: '0 auto 38px',
+                        color: 'rgba(196,181,253,0.70)', fontSize: '0.98rem',
+                        lineHeight: 1.7, maxWidth: 440, margin: '0 auto 42px',
                     }}>
                         Join hundreds of NUST students already leveraging campus opportunities to accelerate their academic and professional journey.
                     </p>
                     <div style={{ display: 'flex', gap: 14, justifyContent: 'center', flexWrap: 'wrap' }}>
                         <Link to="/register" style={{
-                            background: 'linear-gradient(135deg, #f59e0b, #fbbf24)',
-                            color: '#1e2a4a', padding: '14px 34px', borderRadius: 10,
-                            fontWeight: 700, fontSize: '0.95rem', textDecoration: 'none',
-                            boxShadow: '0 4px 18px rgba(245,158,11,0.38)', display: 'inline-block',
+                            background: 'linear-gradient(135deg, #7c3aed, #6d28d9)',
+                            color: '#ffffff', padding: '14px 36px', borderRadius: 12,
+                            fontWeight: 700, fontSize: '0.96rem', textDecoration: 'none',
+                            boxShadow: '0 4px 22px rgba(124,58,237,0.50)', display: 'inline-block',
                         }}>
                             Create Free Account
                         </Link>
                         <Link to="/opportunities" style={{
-                            background: 'transparent', color: 'rgba(255,255,255,0.78)',
-                            padding: '14px 34px', borderRadius: 10,
-                            fontWeight: 600, fontSize: '0.95rem', textDecoration: 'none',
-                            border: '1px solid rgba(255,255,255,0.22)', display: 'inline-block',
+                            background: 'transparent', color: 'rgba(196,181,253,0.85)',
+                            padding: '14px 36px', borderRadius: 12,
+                            fontWeight: 600, fontSize: '0.96rem', textDecoration: 'none',
+                            border: '1px solid rgba(167,139,250,0.28)', display: 'inline-block',
                         }}>
                             Browse Without Signing Up
                         </Link>
@@ -521,8 +506,12 @@ export default function LandingPage() {
             </section>
 
             {/* ═══════════════════════════ FOOTER ═══════════════════════════ */}
-            <footer style={{ background: '#111827', padding: '26px 24px', textAlign: 'center' }}>
-                <p style={{ color: 'rgba(255,255,255,0.28)', fontSize: '0.8rem', margin: 0 }}>
+            <footer style={{
+                background: '#09091f',
+                padding: '28px 24px', textAlign: 'center',
+                borderTop: '1px solid rgba(167,139,250,0.10)',
+            }}>
+                <p style={{ color: 'rgba(196,181,253,0.30)', fontSize: '0.8rem', margin: 0 }}>
                     © 2025 Campus Opportunity Aggregator &nbsp;·&nbsp; NUST &nbsp;·&nbsp; All rights reserved
                 </p>
             </footer>
@@ -536,17 +525,17 @@ function SectionHeader({ eyebrow, title, body }) {
         <div style={{ textAlign: 'center', marginBottom: 54 }}>
             <p style={{
                 fontSize: '0.72rem', letterSpacing: '0.13em',
-                textTransform: 'uppercase', color: '#f59e0b',
-                fontWeight: 600, marginBottom: 10,
+                textTransform: 'uppercase', color: '#7c3aed',
+                fontWeight: 700, marginBottom: 10,
             }}>{eyebrow}</p>
             <h2 style={{
                 fontFamily: "'Playfair Display', serif",
-                fontSize: 'clamp(1.6rem, 3vw, 2.3rem)',
-                fontWeight: 700, color: '#1e2a4a', marginBottom: 13,
+                fontSize: 'clamp(1.7rem, 3vw, 2.4rem)',
+                fontWeight: 800, color: '#1a1035', marginBottom: 14,
             }}>{title}</h2>
             <p style={{
-                color: '#6b7280', fontSize: '0.95rem',
-                maxWidth: 490, margin: '0 auto', lineHeight: 1.65,
+                color: '#6b7280', fontSize: '0.96rem',
+                maxWidth: 490, margin: '0 auto', lineHeight: 1.68,
             }}>{body}</p>
         </div>
     );

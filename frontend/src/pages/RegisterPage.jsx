@@ -76,12 +76,12 @@ export default function RegisterPage() {
     })();
 
     return (
-        <div style={{ minHeight: '100vh', display: 'flex', background: '#f5f4f0' }}>
+        <div style={{ minHeight: '100vh', display: 'flex', background: '#f5f3ff' }}>
 
             {/* ── Left panel (branding) ── */}
             <div className="hidden lg:flex" style={{
                 width: 420, flexShrink: 0,
-                background: 'linear-gradient(160deg, #1a2540 0%, #2d3d6e 60%, #1e3a5f 100%)',
+                background: 'linear-gradient(160deg, #0f0e2b 0%, #1e1b4b 55%, #312e81 100%)',
                 flexDirection: 'column',
                 justifyContent: 'space-between',
                 padding: '44px 44px 40px',
@@ -89,18 +89,19 @@ export default function RegisterPage() {
                 overflow: 'hidden',
             }}>
                 {/* Decorative circles */}
-                <div style={{ position: 'absolute', top: -80, right: -80, width: 260, height: 260, borderRadius: '50%', background: 'rgba(245,158,11,0.07)', pointerEvents: 'none' }} />
-                <div style={{ position: 'absolute', bottom: -60, left: -40, width: 200, height: 200, borderRadius: '50%', background: 'rgba(79,70,229,0.10)', pointerEvents: 'none' }} />
+                <div style={{ position: 'absolute', top: -80, right: -80, width: 280, height: 280, borderRadius: '50%', background: 'rgba(167,139,250,0.10)', pointerEvents: 'none' }} />
+                <div style={{ position: 'absolute', bottom: -60, left: -40, width: 220, height: 220, borderRadius: '50%', background: 'rgba(109,40,217,0.12)', pointerEvents: 'none' }} />
+                <div style={{ position: 'absolute', top: '45%', right: '15%', width: 100, height: 100, borderRadius: '50%', background: 'rgba(245,158,11,0.07)', pointerEvents: 'none' }} />
 
                 <div style={{ position: 'relative', zIndex: 1 }}>
                     {/* Logo */}
                     <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: 10, textDecoration: 'none', marginBottom: 52 }}>
                         <div style={{
                             width: 38, height: 38,
-                            background: 'linear-gradient(135deg, #f59e0b, #fbbf24)',
+                            background: 'linear-gradient(135deg, #7c3aed, #a78bfa)',
                             borderRadius: 10,
                             display: 'flex', alignItems: 'center', justifyContent: 'center',
-                            fontSize: 18, boxShadow: '0 2px 10px rgba(245,158,11,0.4)',
+                            fontSize: 18, boxShadow: '0 2px 12px rgba(124,58,237,0.45)',
                         }}>🎓</div>
                         <div>
                             <div style={{ fontFamily: "'Playfair Display', serif", color: '#fff', fontWeight: 700, fontSize: '1rem', lineHeight: 1 }}>
@@ -128,8 +129,8 @@ export default function RegisterPage() {
                             <div key={b.text} style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
                                 <div style={{
                                     width: 34, height: 34, borderRadius: 9,
-                                    background: 'rgba(255,255,255,0.07)',
-                                    border: '1px solid rgba(255,255,255,0.1)',
+                                    background: 'rgba(167,139,250,0.12)',
+                                    border: '1px solid rgba(167,139,250,0.18)',
                                     display: 'flex', alignItems: 'center', justifyContent: 'center',
                                     fontSize: 16, flexShrink: 0,
                                 }}>{b.icon}</div>
@@ -209,7 +210,7 @@ export default function RegisterPage() {
                                 value={form.user_name} onChange={handleChange}
                                 required placeholder="e.g. zainab_hashmi"
                                 style={inputStyle}
-                                onFocus={e => e.target.style.borderColor = '#4f46e5'}
+                                onFocus={e => e.target.style.borderColor = '#7c3aed'}
                                 onBlur={e => e.target.style.borderColor = '#d1d5db'}
                             />
                         </FormField>
@@ -221,7 +222,7 @@ export default function RegisterPage() {
                                 value={form.email} onChange={handleChange}
                                 required placeholder="example@gmail.com"
                                 style={inputStyle}
-                                onFocus={e => e.target.style.borderColor = '#4f46e5'}
+                                onFocus={e => e.target.style.borderColor = '#7c3aed'}
                                 onBlur={e => e.target.style.borderColor = '#d1d5db'}
                             />
                         </FormField>
@@ -232,7 +233,7 @@ export default function RegisterPage() {
                                 name="dept_id" value={form.dept_id}
                                 onChange={handleChange} required
                                 style={{ ...inputStyle, cursor: 'pointer', color: form.dept_id ? '#1a1f36' : '#9ca3af' }}
-                                onFocus={e => e.target.style.borderColor = '#4f46e5'}
+                                onFocus={e => e.target.style.borderColor = '#7c3aed'}
                                 onBlur={e => e.target.style.borderColor = '#d1d5db'}
                             >
                                 <option value="" disabled>Select your department</option>
@@ -249,7 +250,7 @@ export default function RegisterPage() {
                                 value={form.password} onChange={handleChange}
                                 required placeholder="Min. 6 characters"
                                 style={inputStyle}
-                                onFocus={e => e.target.style.borderColor = '#4f46e5'}
+                                onFocus={e => e.target.style.borderColor = '#7c3aed'}
                                 onBlur={e => e.target.style.borderColor = '#d1d5db'}
                             />
                             {passwordStrength && (
@@ -292,8 +293,8 @@ export default function RegisterPage() {
                             type="submit"
                             disabled={loading || !!success}
                             style={{
-                                width: '100%',
-                                background: loading || success ? '#a5b4fc' : 'linear-gradient(135deg, #4f46e5, #4338ca)',
+                                        width: '100%',
+                                background: loading || success ? '#c4b5fd' : 'linear-gradient(135deg, #7c3aed, #6d28d9)',
                                 color: '#fff',
                                 border: 'none',
                                 borderRadius: 10,
@@ -304,7 +305,7 @@ export default function RegisterPage() {
                                 fontFamily: "'DM Sans', sans-serif",
                                 letterSpacing: '0.01em',
                                 marginTop: 4,
-                                boxShadow: loading || success ? 'none' : '0 4px 14px rgba(79,70,229,0.35)',
+                                boxShadow: loading || success ? 'none' : '0 4px 18px rgba(109,40,217,0.40)',
                             }}
                         >
                             {loading ? 'Creating account...' : success ? 'Account created!' : 'Create Account'}
@@ -317,7 +318,7 @@ export default function RegisterPage() {
                         fontSize: '0.86rem', color: '#9ca3af',
                     }}>
                         Already have an account?{' '}
-                        <Link to="/login" style={{ color: '#4f46e5', fontWeight: 600, textDecoration: 'none' }}>
+                        <Link to="/login" style={{ color: '#7c3aed', fontWeight: 600, textDecoration: 'none' }}>
                             Sign in
                         </Link>
                     </div>

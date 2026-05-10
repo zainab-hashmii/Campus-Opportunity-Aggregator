@@ -88,14 +88,14 @@ export default function ListingsPage() {
         <div>
             {/* ── Hero Banner ── */}
             <div style={{
-                background: 'linear-gradient(135deg, #1e2a4a 0%, #2d3d6e 60%, #1e3a5f 100%)',
+                background: 'linear-gradient(135deg, #0f0e2b 0%, #1e1b4b 55%, #312e81 100%)',
                 padding: '48px 24px 56px',
                 position: 'relative',
                 overflow: 'hidden',
             }}>
-                <div style={{ position: 'absolute', top: -60,  right: -60, width: 220, height: 220, borderRadius: '50%', background: 'rgba(245,158,11,0.08)',  pointerEvents: 'none' }} />
-                <div style={{ position: 'absolute', bottom: -40, left: '30%', width: 160, height: 160, borderRadius: '50%', background: 'rgba(79,70,229,0.12)',  pointerEvents: 'none' }} />
-                <div style={{ position: 'absolute', top: 20,   left: -40, width: 120, height: 120, borderRadius: '50%', background: 'rgba(255,255,255,0.04)', pointerEvents: 'none' }} />
+                <div style={{ position: 'absolute', top: -60,  right: -60, width: 240, height: 240, borderRadius: '50%', background: 'rgba(167,139,250,0.09)',  pointerEvents: 'none' }} />
+                <div style={{ position: 'absolute', bottom: -40, left: '30%', width: 170, height: 170, borderRadius: '50%', background: 'rgba(109,40,217,0.12)',  pointerEvents: 'none' }} />
+                <div style={{ position: 'absolute', top: 20,   left: -40, width: 130, height: 130, borderRadius: '50%', background: 'rgba(245,158,11,0.06)', pointerEvents: 'none' }} />
 
                 <div className="max-w-7xl mx-auto relative">
                     <div className="fade-up">

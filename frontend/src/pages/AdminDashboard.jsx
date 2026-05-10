@@ -124,10 +124,10 @@ export default function AdminDashboard() {
     const labelClass = "block text-sm font-medium text-gray-700 mb-1";
 
     return (
-        <div style={{ minHeight: '100vh', background: '#f5f4f0' }}>
+        <div style={{ minHeight: '100vh', background: '#f5f3ff' }}>
 
             {/* Header */}
-            <div style={{ background: 'linear-gradient(135deg, #1e2a4a 0%, #2d3d6e 100%)', padding: '24px 32px' }}>
+            <div style={{ background: 'linear-gradient(135deg, #0f0e2b 0%, #1e1b4b 60%, #312e81 100%)', padding: '24px 32px' }}>
                 <div className="max-w-7xl mx-auto flex items-center justify-between">
                     <div>
                         <p style={{ color: '#fbbf24', fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 4 }}>
@@ -183,9 +183,9 @@ export default function AdminDashboard() {
                                 cursor: 'pointer',
                                 border: 'none',
                                 fontFamily: "'DM Sans', sans-serif",
-                                background: activeTab === tab.id ? '#1e2a4a' : '#fff',
+                                background: activeTab === tab.id ? 'linear-gradient(135deg, #7c3aed, #6d28d9)' : '#fff',
                                 color: activeTab === tab.id ? '#fff' : '#6b7280',
-                                boxShadow: activeTab === tab.id ? '0 2px 8px rgba(30,42,74,0.2)' : '0 1px 3px rgba(0,0,0,0.06)',
+                                boxShadow: activeTab === tab.id ? '0 2px 10px rgba(109,40,217,0.30)' : '0 1px 3px rgba(0,0,0,0.06)',
                                 transition: 'all 0.15s'
                             }}>
                             {tab.label}
@@ -197,7 +197,7 @@ export default function AdminDashboard() {
                 {activeTab === 'overview' && (
                     <div style={{ background: '#fff', borderRadius: 16, border: '1px solid #e5e7eb', overflow: 'hidden', boxShadow: '0 1px 3px rgba(0,0,0,0.06)' }}>
                         <div style={{ padding: '16px 24px', borderBottom: '1px solid #f3f4f6', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                            <h2 style={{ fontSize: '1rem', fontWeight: 700, color: '#1e2a4a' }}>All Opportunities</h2>
+                            <h2 style={{ fontSize: '1rem', fontWeight: 700, color: '#1a1035' }}>All Opportunities</h2>
                             <span style={{ fontSize: '0.8rem', color: '#6b7280' }}>{opportunities.length} total</span>
                         </div>
 
@@ -227,7 +227,7 @@ export default function AdminDashboard() {
                                             const dl = getDaysLeft(opp.deadline);
                                             return (
                                                 <tr key={opp.opp_id} style={{ borderTop: '1px solid #f3f4f6', background: i % 2 === 0 ? '#fff' : '#fafafa' }}>
-                                                    <td style={{ padding: '12px 16px', fontSize: '0.875rem', fontWeight: 600, color: '#1e2a4a', maxWidth: 200 }}>
+                                                    <td style={{ padding: '12px 16px', fontSize: '0.875rem', fontWeight: 600, color: '#1a1035', maxWidth: 200 }}>
                                                         <div style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{opp.title}</div>
                                                     </td>
                                                     <td style={{ padding: '12px 16px', fontSize: '0.8rem', color: '#4f46e5', fontWeight: 500, whiteSpace: 'nowrap' }}>{opp.category}</td>
@@ -280,7 +280,7 @@ export default function AdminDashboard() {
                 {activeTab === 'post' && (
                     <div style={{ maxWidth: 680 }}>
                         <div style={{ background: '#fff', borderRadius: 16, border: '1px solid #e5e7eb', padding: 32, boxShadow: '0 1px 3px rgba(0,0,0,0.06)' }}>
-                            <h2 style={{ fontSize: '1.1rem', fontWeight: 700, color: '#1e2a4a', marginBottom: 24 }}>Post a New Opportunity</h2>
+                            <h2 style={{ fontSize: '1.1rem', fontWeight: 700, color: '#1a1035', marginBottom: 24 }}>Post a New Opportunity</h2>
 
                             {submitStatus === 'success' && (
                                 <div style={{ background: '#ecfdf5', border: '1px solid #a7f3d0', borderRadius: 10, padding: '12px 16px', marginBottom: 20, color: '#059669', fontSize: '0.875rem', fontWeight: 500 }}>
@@ -345,11 +345,12 @@ export default function AdminDashboard() {
                                 </div>
 
                                 <button type="submit" disabled={submitting} style={{
-                                    background: submitting ? '#a5b4fc' : 'linear-gradient(135deg, #1e2a4a, #2d3d6e)',
+                                    background: submitting ? '#c4b5fd' : 'linear-gradient(135deg, #7c3aed, #6d28d9)',
                                     color: '#fff', border: 'none', borderRadius: 10,
                                     padding: '12px 24px', fontSize: '0.9rem', fontWeight: 700,
                                     cursor: submitting ? 'not-allowed' : 'pointer',
                                     fontFamily: "'DM Sans', sans-serif",
+                                    boxShadow: submitting ? 'none' : '0 4px 16px rgba(109,40,217,0.38)',
                                     transition: 'all 0.2s'
                                 }}>
                                     {submitting ? 'Posting...' : 'Post Opportunity'}

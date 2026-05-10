@@ -20,9 +20,9 @@ export default function Navbar() {
 
     return (
         <nav style={{
-            background: 'linear-gradient(135deg, #1e2a4a 0%, #2d3d6e 100%)',
-            borderBottom: '1px solid rgba(255,255,255,0.08)',
-            boxShadow: '0 2px 20px rgba(0,0,0,0.15)'
+            background: 'linear-gradient(135deg, #0f0e2b 0%, #1e1b4b 60%, #2d2a8a 100%)',
+            borderBottom: '1px solid rgba(167,139,250,0.12)',
+            boxShadow: '0 2px 24px rgba(15,14,43,0.45)'
         }}>
             <div className="max-w-7xl mx-auto px-4 py-0">
                 <div className="flex items-center justify-between h-16">
@@ -33,12 +33,12 @@ export default function Navbar() {
                         className="flex items-center gap-2.5 group"
                         style={{ textDecoration: 'none' }}>
                         <div style={{
-                            width: 34, height: 34,
-                            background: 'linear-gradient(135deg, #f59e0b, #fbbf24)',
+                            width: 36, height: 36,
+                            background: 'linear-gradient(135deg, #7c3aed, #a78bfa)',
                             borderRadius: 10,
                             display: 'flex', alignItems: 'center', justifyContent: 'center',
-                            fontSize: 16,
-                            boxShadow: '0 2px 8px rgba(245,158,11,0.4)',
+                            fontSize: 17,
+                            boxShadow: '0 2px 10px rgba(124,58,237,0.45)',
                             flexShrink: 0
                         }}>
                             🎓
@@ -126,14 +126,14 @@ export default function Navbar() {
                                     to="/register"
                                     style={{
                                         marginLeft: 4,
-                                        background: 'linear-gradient(135deg, #f59e0b, #fbbf24)',
-                                        color: '#1e2a4a',
+                                        background: 'linear-gradient(135deg, #7c3aed, #6d28d9)',
+                                        color: '#ffffff',
                                         borderRadius: 8,
                                         padding: '7px 16px',
                                         fontSize: '0.82rem',
                                         fontWeight: 700,
                                         textDecoration: 'none',
-                                        boxShadow: '0 2px 8px rgba(245,158,11,0.35)',
+                                        boxShadow: '0 2px 10px rgba(124,58,237,0.4)',
                                         transition: 'all 0.2s',
                                         display: 'inline-block'
                                     }}>
@@ -163,8 +163,8 @@ export default function Navbar() {
             {/* Mobile Menu */}
             {menuOpen && (
                 <div style={{
-                    background: 'rgba(20, 28, 50, 0.98)',
-                    borderTop: '1px solid rgba(255,255,255,0.08)',
+                    background: 'rgba(15, 14, 43, 0.99)',
+                    borderTop: '1px solid rgba(167,139,250,0.10)',
                     padding: '12px 16px 16px'
                 }}>
                     <div className="flex flex-col gap-1">

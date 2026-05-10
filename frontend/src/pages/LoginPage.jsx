@@ -57,18 +57,18 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4" style={{ background: '#f5f4f0' }}>
-      <div className="bg-white rounded-2xl shadow-md w-full max-w-md p-8">
+    <div className="min-h-screen flex items-center justify-center px-4" style={{ background: '#f5f3ff' }}>
+      <div className="bg-white rounded-2xl shadow-md w-full max-w-md p-8" style={{ border: '1px solid #ede9fe' }}>
 
         {/* Header */}
-        <h1 className="text-2xl font-bold text-gray-800 mb-1">Welcome back</h1>
-        <p className="text-gray-500 mb-6 text-sm">Log in to your Campus Opportunities account</p>
+        <h1 className="text-2xl font-bold mb-1" style={{ color: '#1a1035' }}>Welcome back</h1>
+        <p className="mb-6 text-sm" style={{ color: '#6b7280' }}>Log in to your Campus Opportunities account</p>
 
         {/* Role Selector */}
         <div style={{
           display: 'grid', gridTemplateColumns: '1fr 1fr',
           gap: 8, marginBottom: 24,
-          background: '#f3f4f6', borderRadius: 10, padding: 4
+          background: '#f5f3ff', borderRadius: 10, padding: 4
         }}>
           {[
             { id: 'student', label: '🎓 Student', desc: 'Browse & apply' },
@@ -86,10 +86,10 @@ export default function LoginPage() {
                 fontFamily: "'DM Sans', sans-serif",
                 transition: 'all 0.15s',
                 background: role === r.id
-                  ? (r.id === 'admin' ? '#1e2a4a' : '#4f46e5')
+                  ? (r.id === 'admin' ? 'linear-gradient(135deg, #0f0e2b, #1e1b4b)' : 'linear-gradient(135deg, #7c3aed, #6d28d9)')
                   : 'transparent',
                 color: role === r.id ? '#fff' : '#6b7280',
-                boxShadow: role === r.id ? '0 2px 8px rgba(0,0,0,0.15)' : 'none',
+                boxShadow: role === r.id ? '0 2px 10px rgba(109,40,217,0.25)' : 'none',
               }}>
               <div style={{ fontSize: '0.9rem', fontWeight: 700 }}>{r.label}</div>
               <div style={{
@@ -105,11 +105,11 @@ export default function LoginPage() {
 
         {/* Role hint */}
         <div style={{
-          background: role === 'admin' ? '#f0f4ff' : '#eef2ff',
-          border: `1px solid ${role === 'admin' ? '#c7d2fe' : '#c7d2fe'}`,
+          background: '#f5f3ff',
+          border: '1px solid #ede9fe',
           borderRadius: 8, padding: '8px 12px',
           fontSize: '0.78rem',
-          color: role === 'admin' ? '#3730a3' : '#4338ca',
+          color: '#6d28d9',
           marginBottom: 20
         }}>
           {role === 'admin'
@@ -159,27 +159,28 @@ export default function LoginPage() {
             style={{
               width: '100%',
               background: loading
-                ? '#a5b4fc'
+                ? '#c4b5fd'
                 : role === 'admin'
-                  ? 'linear-gradient(135deg, #1e2a4a, #2d3d6e)'
-                  : '#4f46e5',
+                  ? 'linear-gradient(135deg, #0f0e2b, #1e1b4b)'
+                  : 'linear-gradient(135deg, #7c3aed, #6d28d9)',
               color: '#fff',
               border: 'none',
-              borderRadius: 8,
-              padding: '10px',
-              fontSize: '0.9rem',
+              borderRadius: 10,
+              padding: '11px',
+              fontSize: '0.92rem',
               fontWeight: 700,
               cursor: loading ? 'not-allowed' : 'pointer',
               fontFamily: "'DM Sans', sans-serif",
-              transition: 'all 0.2s'
+              transition: 'all 0.2s',
+              boxShadow: loading ? 'none' : '0 4px 16px rgba(109,40,217,0.38)',
             }}>
             {loading ? "Logging in..." : `Log in as ${role === 'admin' ? 'Admin' : 'Student'}`}
           </button>
         </form>
 
-        <p className="text-center text-sm text-gray-500 mt-5">
+        <p className="text-center text-sm mt-5" style={{ color: '#9ca3af' }}>
           Don't have an account?{" "}
-          <Link to="/register" className="text-indigo-600 hover:underline font-medium">
+          <Link to="/register" style={{ color: '#7c3aed', fontWeight: 600, textDecoration: 'none' }}>
             Sign up
           </Link>
         </p>
