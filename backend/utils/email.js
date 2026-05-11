@@ -3,14 +3,13 @@ const dns = require('dns').promises;
 
 function createTransporter() {
     return nodemailer.createTransport({
-        host:   process.env.SMTP_HOST || 'smtp.gmail.com',
-        port:   parseInt(process.env.SMTP_PORT) || 587,
-        secure: process.env.SMTP_SECURE === 'true',
+        host:   'smtp.resend.com',
+        port:   465,
+        secure: true,
         auth: {
-            user: process.env.SMTP_USER,
-            pass: process.env.SMTP_PASS,
+            user: 'resend',
+            pass: process.env.RESEND_API_KEY,
         },
-        tls: { rejectUnauthorized: false },
     });
 }
 
@@ -137,7 +136,7 @@ async function sendWelcomeEmail(to, userName) {
 </html>`;
 
     await transporter.sendMail({
-        from:    `"Campus Opportunity Aggregator" <${process.env.SMTP_FROM || process.env.SMTP_USER}>`,
+        from:    'Campus Opportunity Aggregator <onboarding@resend.dev>',
         to,
         subject: `Welcome to Campus Opportunity Aggregator, ${userName}!`,
         html,
