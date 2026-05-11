@@ -73,7 +73,7 @@ async function sendWelcomeEmail(to, userName) {
 
     <div class="header">
       <div class="logo-box">🎓</div>
-      <div class="app-name">Campus Opportunity Aggregator</div>
+      <div class="app-name" style="color:#ffffff;">Campus Opportunity Aggregator</div>
       <div class="tagline">NUST &nbsp;·&nbsp; DISCOVER &nbsp;·&nbsp; APPLY &nbsp;·&nbsp; GROW</div>
     </div>
 
