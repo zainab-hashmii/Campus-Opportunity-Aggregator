@@ -38,7 +38,7 @@ export default function ListingsPage() {
             if (currentFilters.is_paid !== '') params.append('is_paid',  currentFilters.is_paid);
 
             const response = await axios.get(`/api/search?${params.toString()}`);
-            setOpportunities(response.data.data);
+            setOpportunities(response.data.data || []);
         } catch (err) {
             setError('Failed to load opportunities. Please try again.');
             console.error(err);
