@@ -10,7 +10,7 @@ export default function NotificationBell() {
   useEffect(() => {
     if (!token) return;
 
-    fetch(`${process.env.REACT_APP_API_URL || ''}/api/bookmarks/notifications`, {
+    fetch(`${process.env.REACT_APP_API_URL || 'https://campus-opportunity-aggregator-1.onrender.com'}/api/bookmarks/notifications`, {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then((res) => res.json())

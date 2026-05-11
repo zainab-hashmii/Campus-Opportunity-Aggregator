@@ -42,7 +42,7 @@ export default function RegisterPage() {
 
         setLoading(true);
         try {
-            const base = process.env.REACT_APP_API_URL || '';
+            const base = process.env.REACT_APP_API_URL || 'https://campus-opportunity-aggregator-1.onrender.com';
             const res = await fetch(`${base}/api/auth/register`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
