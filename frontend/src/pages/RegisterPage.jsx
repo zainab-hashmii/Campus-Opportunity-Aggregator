@@ -217,7 +217,7 @@ export default function RegisterPage() {
                         </FormField>
 
                         {/* Email */}
-                        <FormField label="University Email">
+                        <FormField label="Email">
                             <input
                                 type="email" name="email"
                                 value={form.email} onChange={handleChange}

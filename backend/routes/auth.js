@@ -39,9 +39,9 @@ router.post('/register', async (req, res) => {
             dept_name,
         });
 
-        sendWelcomeEmail(email, user_name).catch(err =>
-            console.error('[Email] Welcome email failed:', err.message)
-        );
+        sendWelcomeEmail(email, user_name)
+            .then(() => console.log('[Email] Welcome email sent to:', email))
+            .catch(err => console.error('[Email] Welcome email failed:', err.message, '| SMTP_USER:', process.env.SMTP_USER));
 
         res.status(201).json({ message: 'Account created successfully! A welcome email has been sent to your inbox.' });
     } catch (err) {
@@ -59,7 +59,10 @@ router.post('/login', async (req, res) => {
     }
 
     try {
-        const user = await User.findOne({ email: email.toLowerCase() });
+        const identifier = email.toLowerCase();
+        const user = await User.findOne({
+            $or: [{ email: identifier }, { user_name: identifier }]
+        });
         if (!user) {
             return res.status(401).json({ message: 'Invalid email or password.' });
         }
