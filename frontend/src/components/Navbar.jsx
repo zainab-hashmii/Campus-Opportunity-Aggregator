@@ -20,6 +20,9 @@ export default function Navbar() {
 
     return (
         <nav style={{
+            position: 'sticky',
+            top: 0,
+            zIndex: 50,
             background: 'linear-gradient(135deg, #0f0e2b 0%, #1e1b4b 60%, #2d2a8a 100%)',
             borderBottom: '1px solid rgba(167,139,250,0.12)',
             boxShadow: '0 2px 24px rgba(15,14,43,0.45)'
