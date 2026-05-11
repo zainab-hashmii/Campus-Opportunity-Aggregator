@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import api from '../api';
 import { useAuth } from '../context/AuthContext';
 
 export default function AdminDashboard() {
@@ -63,7 +63,7 @@ export default function AdminDashboard() {
 
     async function fetchStats() {
         try {
-            const res = await axios.get('/api/admin/stats', { headers: authHeaders });
+            const res = await api.get('/api/admin/stats', { headers: authHeaders });
             setStats(res.data.data);
         } catch (err) {
             console.error('Stats error:', err);
@@ -73,7 +73,7 @@ export default function AdminDashboard() {
     async function fetchOpportunities() {
         setLoading(true);
         try {
-            const res = await axios.get('/api/admin/opportunities', { headers: authHeaders });
+            const res = await api.get('/api/admin/opportunities', { headers: authHeaders });
             setOpportunities(res.data.data);
         } catch (err) {
             console.error('Fetch opps error:', err);
@@ -87,7 +87,7 @@ export default function AdminDashboard() {
         setSubmitting(true);
         setSubmitStatus(null);
         try {
-            await axios.post('/api/admin/opportunities', form, { headers: authHeaders });
+            await api.post('/api/admin/opportunities', form, { headers: authHeaders });
             setSubmitStatus('success');
             setForm({ title: '', description: '', category_id: '', dept_id: '', deadline: '', opp_mode: '', is_paid: false });
             fetchOpportunities();
@@ -102,7 +102,7 @@ export default function AdminDashboard() {
 
     async function handleDelete(opp_id) {
         try {
-            await axios.delete(`/api/admin/opportunities/${opp_id}`, { headers: authHeaders });
+            await api.delete(`/api/admin/opportunities/${opp_id}`, { headers: authHeaders });
             setOpportunities(prev => prev.filter(o => o.opp_id !== opp_id));
             setDeleteConfirm(null);
             fetchStats();

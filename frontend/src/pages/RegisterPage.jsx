@@ -42,7 +42,8 @@ export default function RegisterPage() {
 
         setLoading(true);
         try {
-            const res = await fetch('/api/auth/register', {
+            const base = process.env.REACT_APP_API_URL || '';
+            const res = await fetch(`${base}/api/auth/register`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({

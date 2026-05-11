@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import api from '../api';
 import { useAuth } from '../context/AuthContext';
 import { useSaved } from '../context/SavedContext';
 
@@ -25,9 +25,9 @@ export default function DetailPage() {
     useEffect(() => {
         async function fetchOpportunity() {
             try {
-                const response = await axios.get(`/api/search/${id}`);
+                const response = await api.get(`/api/search/${id}`);
                 setOpportunity(response.data.data);
-                await axios.post(`/api/search/${id}/view`);
+                await api.post(`/api/search/${id}/view`);
             } catch (err) {
                 setError('Failed to load opportunity details.');
                 console.error(err);
@@ -93,12 +93,12 @@ export default function DetailPage() {
         if (!token) { navigate('/login'); return; }
         try {
             if (saved) {
-                await axios.delete(`/api/bookmarks/${id}`, {
+                await api.delete(`/api/bookmarks/${id}`, {
                     headers: { Authorization: `Bearer ${token}` }
                 });
                 markUnsaved(id);
             } else {
-                await axios.post('/api/bookmarks', { opp_id: id }, {
+                await api.post('/api/bookmarks', { opp_id: id }, {
                     headers: { Authorization: `Bearer ${token}` }
                 });
                 markSaved(id);

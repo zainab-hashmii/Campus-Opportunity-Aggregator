@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import axios from 'axios';
+import api from '../api';
 import OpportunityCard from '../components/OpportunityCard';
 import FilterBar from '../components/FilterBar';
 
@@ -37,7 +37,7 @@ export default function ListingsPage() {
             if (currentFilters.opp_mode)    params.append('opp_mode',    currentFilters.opp_mode);
             if (currentFilters.is_paid !== '') params.append('is_paid',  currentFilters.is_paid);
 
-            const response = await axios.get(`/api/search?${params.toString()}`);
+            const response = await api.get(`/api/search?${params.toString()}`);
             setOpportunities(response.data.data || []);
         } catch (err) {
             setError('Failed to load opportunities. Please try again.');

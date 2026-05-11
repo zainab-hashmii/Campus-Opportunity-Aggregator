@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
-import axios from 'axios';
+import api from '../api';
 import { useAuth } from '../context/AuthContext';
 import { useSaved } from '../context/SavedContext';
 
@@ -52,13 +52,13 @@ export default function OpportunityCard({ opportunity, onUnsave }) {
         setSaving(true);
         try {
             if (saved) {
-                await axios.delete(`/api/bookmarks/${opportunity.opp_id}`, {
+                await api.delete(`/api/bookmarks/${opportunity.opp_id}`, {
                     headers: { Authorization: `Bearer ${token}` }
                 });
                 markUnsaved(opportunity.opp_id);
                 if (onUnsave) onUnsave(opportunity.opp_id);
             } else {
-                await axios.post('/api/bookmarks', { opp_id: opportunity.opp_id }, {
+                await api.post('/api/bookmarks', { opp_id: opportunity.opp_id }, {
                     headers: { Authorization: `Bearer ${token}` }
                 });
                 markSaved(opportunity.opp_id);

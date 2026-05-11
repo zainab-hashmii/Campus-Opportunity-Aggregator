@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useEffect, useCallback } from 'react';
-import axios from 'axios';
+import api from '../api';
 import { useAuth } from './AuthContext';
 
 const SavedContext = createContext({});
@@ -13,7 +13,7 @@ export function SavedProvider({ children }) {
         if (!token) { setSavedIds(new Set()); return; }
         setLoading(true);
         try {
-            const res = await axios.get('/api/bookmarks', {
+            const res = await api.get('/api/bookmarks', {
                 headers: { Authorization: `Bearer ${token}` }
             });
             const ids = new Set(res.data.map(o => o.opp_id));
