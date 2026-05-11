@@ -1,4 +1,4 @@
-import { useEffect, useState, useContext, useRef } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useAuth } from '../context/AuthContext';
 
 export default function NotificationBell() {

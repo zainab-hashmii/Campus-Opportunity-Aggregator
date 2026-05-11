@@ -59,7 +59,7 @@ export default function AdminDashboard() {
     useEffect(() => {
         fetchStats();
         fetchOpportunities();
-    }, []);
+    }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
     async function fetchStats() {
         try {
