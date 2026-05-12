@@ -1,0 +1,228 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg-base: #f5f3ff;
+  --bg-card: #ffffff;
+  --navy: #0f0e2b;
+  --navy-2: #1e1b4b;
+  --navy-3: #312e81;
+  --violet: #6d28d9;
+  --violet-light: #7c3aed;
+  --indigo: #4f46e5;
+  --indigo-light: #ede9fe;
+  --amber: #f59e0b;
+  --amber-light: #fffbeb;
+  --emerald: #059669;
+  --text-primary: #1a1035;
+  --text-secondary: #6b7280;
+  --border: #e5e7eb;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+  --shadow-md: 0 4px 16px rgba(109,40,217,0.10), 0 2px 6px rgba(0,0,0,0.05);
+  --shadow-lg: 0 10px 40px rgba(109,40,217,0.12), 0 4px 12px rgba(0,0,0,0.06);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'DM Sans', 'Inter', sans-serif;
+  background-color: var(--bg-base);
+  color: var(--text-primary);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Subtle dot-grid background pattern */
+.app-background {
+  min-height: 100vh;
+  background-color: var(--bg-base);
+  background-image:
+    radial-gradient(circle at 20% 20%, rgba(109, 40, 217, 0.06) 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(245, 158, 11, 0.07) 0%, transparent 50%),
+    radial-gradient(#c4b5fd 1px, transparent 1px);
+  background-size: 100% 100%, 100% 100%, 28px 28px;
+}
+
+/* Display font for headings */
+.font-display {
+  font-family: 'Playfair Display', serif;
+}
+
+/* Card style */
+.card {
+  background: var(--bg-card);
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.card:hover {
+  box-shadow: var(--shadow-md);
+}
+
+/* Smooth page fade-in */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.fade-up {
+  animation: fadeUp 0.4s ease both;
+}
+
+.fade-up-delay-1 { animation-delay: 0.05s; }
+.fade-up-delay-2 { animation-delay: 0.10s; }
+.fade-up-delay-3 { animation-delay: 0.15s; }
+
+/* Custom scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 9999px; }
+::-webkit-scrollbar-thumb:hover { background: #9ca3af; }
+
+/* Focus ring */
+*:focus-visible {
+  outline: 2px solid var(--violet);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar-thumb { background: #c4b5fd; border-radius: 9999px; }
+::-webkit-scrollbar-thumb:hover { background: #a78bfa; }
+
+/* ── Extended fade-up delays ── */
+.fade-up-delay-4 { animation-delay: 0.20s; }
+.fade-up-delay-5 { animation-delay: 0.28s; }
+.fade-up-delay-6 { animation-delay: 0.36s; }
+
+/* ── Float animation for hero shapes ── */
+@keyframes float {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  33%       { transform: translateY(-18px) rotate(2deg); }
+  66%       { transform: translateY(-8px) rotate(-1deg); }
+}
+
+/* ── Pulse for the live badge dot ── */
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: 0.4; transform: scale(0.75); }
+}
+.pulse-dot {
+  animation: pulse-dot 2s ease-in-out infinite;
+}
+
+/* ── Slow gradient shift on hero background ── */
+@keyframes gradient-shift {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+.hero-gradient-animated {
+  background-size: 200% 200%;
+  animation: gradient-shift 12s ease infinite;
+}
+
+/* ── Hero floating shapes ── */
+.hero-shape {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+}
+.hero-shape-1 {
+  width: 480px; height: 480px;
+  top: -140px; right: -100px;
+  background: radial-gradient(circle, rgba(167,139,250,0.13) 0%, transparent 70%);
+  animation: float 9s ease-in-out infinite;
+}
+.hero-shape-2 {
+  width: 360px; height: 360px;
+  bottom: -110px; left: 6%;
+  background: radial-gradient(circle, rgba(109,40,217,0.14) 0%, transparent 70%);
+  animation: float 11s ease-in-out infinite reverse;
+}
+.hero-shape-3 {
+  width: 200px; height: 200px;
+  top: 22%; right: 22%;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(167,139,250,0.10);
+  animation: float 13s ease-in-out infinite 2s;
+}
+.hero-shape-4 {
+  width: 90px; height: 90px;
+  top: 58%; left: 4%;
+  background: rgba(245,158,11,0.08);
+  animation: float 7s ease-in-out infinite 1s;
+}
+.hero-shape-5 {
+  width: 150px; height: 150px;
+  top: 32%; left: 58%;
+  background: rgba(109,40,217,0.07);
+  border: 1px solid rgba(167,139,250,0.06);
+  animation: float 10s ease-in-out infinite 3s;
+}
+
+/* ── Subtle dot-grid overlay for hero ── */
+.hero-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+  background-size: 52px 52px;
+  pointer-events: none;
+}
+
+/* ── Scroll indicator ── */
+.scroll-indicator {
+  position: absolute;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 24px; height: 40px;
+  border: 2px solid rgba(255,255,255,0.18);
+  border-radius: 100px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 6px;
+}
+.scroll-dot {
+  width: 4px; height: 8px;
+  background: #fbbf24;
+  border-radius: 100px;
+  animation: scroll-bounce 1.9s ease-in-out infinite;
+}
+@keyframes scroll-bounce {
+  0%, 100% { transform: translateY(0);    opacity: 1; }
+  50%       { transform: translateY(13px); opacity: 0.25; }
+}
+
+/* ── Shimmer for loading skeletons ── */
+@keyframes shimmer {
+  0%   { background-position: -400px 0; }
+  100% { background-position:  400px 0; }
+}
+.shimmer {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 800px 100%;
+  animation: shimmer 1.4s infinite;
+}
+
+/* ── Scale-in entrance ── */
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.94); }
+  to   { opacity: 1; transform: scale(1); }
+}
+.scale-in {
+  animation: scaleIn 0.4s ease both;
+}
+
+/* ── Slideshow progress bar ── */
+@keyframes slideProgress {
+  from { width: 0%; }
+  to   { width: 100%; }
+}
