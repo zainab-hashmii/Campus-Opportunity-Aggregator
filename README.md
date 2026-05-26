@@ -154,7 +154,7 @@ campus-opportunity-aggregator/
 
 ### 1. Clone the repository
 ```bash
-git clone https://github.com/<your-org>/campus-opportunity-aggregator.git
+git clone https://github.com/zainab-hashmii/Campus-Opportunity-Aggregator.git
 cd campus-opportunity-aggregator
 ```
 
