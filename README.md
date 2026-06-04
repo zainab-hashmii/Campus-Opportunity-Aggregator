@@ -1,314 +1,435 @@
-# Campus Opportunity Aggregator
+# 🎓 Campus Opportunity Aggregator
 
-A web-based platform for centralized discovery and management of student opportunities — internships, scholarships, hackathons, workshops, research positions, and more — built with React, Node.js, and Oracle Database.
+A full-stack web application designed to centralize the discovery and management of student opportunities including internships, scholarships, hackathons, workshops, research positions, competitions, fellowships, and career development programs.
+
+The platform enables students to search, filter, save, and track opportunities while providing administrators with tools to manage listings and monitor platform activity.
+
+Built using **React.js**, **Node.js**, **Express.js**, and **Oracle Database (PL/SQL)**.
 
 ---
 
-## Team Members
+## 📚 Submitted To
+
+**Ms. Ayesha Hakim**
+
+---
+
+# 👥 Team Members
 
 | Name | ID | Responsibilities |
-|---|---|---|
-| Juwairiya Haroon | 505494 | Schema · Indexes · Views · Search SP · Backend Core · Listings Page · Detail Page · Navbar |
-| Zainab Hashmi | 501868 | Triggers · Transactions · Bookmark SP · Frontend Auth · Saved Page · Notifications |
-| Muskan Ejaz | 522695 | Recommendations SP · Trending View · Analytics · Admin Dashboard · Expiring Soon |
-
-**Submitted To:** Ms. Ayesha Hakim
+|--------|--------|--------|
+| **Juwairiya Haroon** | 505494 | Database Schema Design · Normalization (3NF) · Indexes · Views · Search Stored Procedures · Backend Core Development · Listings Page · Opportunity Detail Page · Responsive Navbar |
+| **Zainab Hashmi** | 501868 | Database Triggers & Transactions · Bookmark Stored Procedures · Authentication System (Login/Register) · Saved Opportunities Module · Notifications Module · Frontend Enhancement & Responsive Design · UI/UX Improvements · Application Deployment (Frontend & Backend) · Bug Fixing · Debugging · Integration Testing |
+| **Muskan Ejaz** | 522695 | Recommendation Engine · Trending Opportunities View · Analytics Dashboard · Admin Dashboard · Expiring Opportunities Module |
 
 ---
 
-## Tech Stack
+# 🚀 Features
+
+## Student Features
+
+- User Registration
+- Secure Login Authentication
+- Browse Opportunities
+- Search Opportunities
+- Advanced Filtering
+- Opportunity Detail View
+- Save/Bookmark Opportunities
+- Personalized Notifications
+- Responsive User Interface
+- Trending Opportunities
+- Expiring Soon Opportunities
+
+## Admin Features
+
+- Add Opportunities
+- Update Opportunities
+- Delete Opportunities
+- Dashboard Analytics
+- Opportunity Management
+- User Activity Monitoring
+
+---
+
+# 🛠 Tech Stack
 
 | Layer | Technology |
-|---|---|
-| Frontend | React + Tailwind CSS |
-| Backend | Node.js + Express |
-| Database | Oracle Database (PL/SQL) |
+|---------|-----------|
+| Frontend | React.js |
+| Styling | Tailwind CSS |
+| Backend | Node.js |
+| Framework | Express.js |
+| Database | Oracle Database |
+| Database Language | PL/SQL |
 | Authentication | JSON Web Tokens (JWT) |
 | Password Security | bcrypt |
+| API Communication | REST APIs |
 
 ---
 
-## Project Structure
+# 🏗 System Architecture
 
+```text
+React Frontend
+      │
+      ▼
+Node.js + Express Backend
+      │
+      ▼
+Oracle Database (PL/SQL)
+      │
+      ▼
+Tables + Views + Procedures + Triggers
 ```
+
+---
+
+# 📂 Project Structure
+
+```text
 Campus_Opportunity_Aggregator/
 │
 ├── backend/
+│   │
 │   ├── config/
-│   │   └── db.js              # Oracle connection pool (Juwairiya)
+│   │   └── db.js
+│   │
 │   ├── middleware/
-│   │   └── auth.js            # JWT verification middleware (Juwairiya)
+│   │   └── auth.js
+│   │
 │   ├── routes/
-│   │   ├── search.js          # Search & filter API (Juwairiya)
-│   │   ├── bookmarks.js       # Bookmark API (Zainab)
-│   │   └── admin.js           # Admin dashboard API (Muskan)
-│   ├── server.js              # Express server entry point (Juwairiya)
+│   │   ├── search.js
+│   │   ├── bookmarks.js
+│   │   ├── auth.js
+│   │   └── admin.js
+│   │
+│   ├── server.js
 │   ├── package.json
-│   └── .env                   # create this manually (see setup)
+│   └── .env
 │
 ├── frontend/
+│   │
 │   └── src/
+│       │
 │       ├── pages/
-│       │   ├── ListingsPage.jsx     # Opportunity listings (Juwairiya)
-│       │   ├── DetailPage.jsx       # Single opportunity view (Juwairiya)
-│       │   ├── LoginPage.jsx        # Login page (Zainab)
-│       │   ├── RegisterPage.jsx     # Register page (Zainab)
-│       │   ├── SavedPage.jsx        # Bookmarks page (Zainab)
-│       │   └── AdminDashboard.jsx   # Admin panel (Muskan)
+│       │   ├── ListingsPage.jsx
+│       │   ├── DetailPage.jsx
+│       │   ├── LoginPage.jsx
+│       │   ├── RegisterPage.jsx
+│       │   ├── SavedPage.jsx
+│       │   └── AdminDashboard.jsx
+│       │
 │       ├── components/
-│       │   ├── Navbar.jsx           # Responsive navbar (Juwairiya)
-│       │   ├── OpportunityCard.jsx  # Reusable card (Juwairiya)
-│       │   ├── FilterBar.jsx        # Search + filters (Juwairiya)
-│       │   └── NotificationBell.jsx # Notifications (Zainab)
+│       │   ├── Navbar.jsx
+│       │   ├── OpportunityCard.jsx
+│       │   ├── FilterBar.jsx
+│       │   └── NotificationBell.jsx
+│       │
 │       └── context/
-│           └── AuthContext.jsx      # JWT token storage (Juwairiya)
+│           └── AuthContext.jsx
 │
 ├── database/
-│   ├── schema.sql             # All tables, indexes, views, procedures, triggers
-│   └── seed.sql               # Sample data for development
+│   ├── schema.sql
+│   └── seed.sql
 │
 └── README.md
 ```
 
 ---
 
-## Database Design
+# 🗄 Database Design
 
-The database is normalized to **Third Normal Form (3NF)** and consists of 12 tables.
+The database is normalized to **Third Normal Form (3NF)** and contains 12 interconnected tables.
 
-### Tables
+## Tables
 
-| Table | Description |
-|---|---|
-| `roles` | Student and admin roles |
-| `departments` | University departments |
-| `categories` | Opportunity categories (internship, scholarship, etc.) |
-| `tags` | Searchable tags (remote, funded, beginner-friendly, etc.) |
-| `users` | Registered users with hashed passwords |
-| `opportunities` | Core opportunity listings |
-| `opportunity_tags` | Many-to-many: opportunities and tags |
-| `saved_opportunities` | Student bookmarks |
-| `user_interests` | Student category preferences for recommendations |
-| `notifications` | System and deadline notifications |
-| `opportunity_views` | View tracking per user per opportunity |
-| `applications_log` | Action history (applied, withdrawn, etc.) |
-
-### ADMS Concepts Implemented
-
-| Concept | Details | Implemented By |
-|---|---|---|
-| **Normalization** | 3NF across all 12 tables | Juwairiya |
-| **Indexes** | B-Tree, Composite, and Function-Based | Juwairiya |
-| **Views** | `active_opportunities`, `expiring_soon`, `trending_opportunities` | Juwairiya / Muskan |
-| **Stored Procedures** | `filter_opportunities`, `add_opportunity`, `get_user_recommendations` | Juwairiya / Muskan |
-| **Triggers** | `trg_update_save_count`, `trg_decrease_save_count`, `trg_update_views_count`, `trg_auto_expire`, `trg_notify_on_new` | Juwairiya / Zainab |
-| **Transactions** | Atomic opportunity posting with tag assignment and rollback on failure | Zainab |
-| **Constraints** | Primary keys, foreign keys, unique, not null, check constraints throughout | Juwairiya |
+| Table Name | Description |
+|------------|-------------|
+| roles | Student and Admin Roles |
+| departments | University Departments |
+| categories | Opportunity Categories |
+| tags | Searchable Tags |
+| users | Registered Users |
+| opportunities | Opportunity Listings |
+| opportunity_tags | Opportunity-Tag Mapping |
+| saved_opportunities | User Bookmarks |
+| user_interests | User Preferences |
+| notifications | User Notifications |
+| opportunity_views | View Tracking |
+| applications_log | User Activity History |
 
 ---
 
-## Setup Instructions
+# 🧠 Advanced Database Concepts Implemented
 
-### Prerequisites
-
-Make sure you have the following installed on your machine:
-
-- [Node.js](https://nodejs.org/) v18 or above
-- [Oracle Database](https://www.oracle.com/database/technologies/appdev/xe.html) (XE edition is fine)
-- [Git](https://git-scm.com/)
+| Concept | Implementation |
+|----------|---------------|
+| Normalization | Third Normal Form (3NF) |
+| Indexes | B-Tree, Composite, Function-Based |
+| Views | Active, Trending, Expiring Soon |
+| Stored Procedures | Search, Recommendations, Opportunity Posting |
+| Triggers | Save Count, View Count, Notifications |
+| Transactions | Atomic Opportunity Posting |
+| Constraints | PK, FK, UNIQUE, CHECK, NOT NULL |
 
 ---
 
-### Step 1 — Clone the Repository
+# 📊 Database Objects
 
-```bash
-git clone https://github.com/your-username/campus-opportunity-aggregator.git
-cd Campus_Opportunity_Aggregator
+## Views
+
+```sql
+active_opportunities
+expiring_soon
+trending_opportunities
+```
+
+## Stored Procedures
+
+```sql
+filter_opportunities
+add_opportunity
+get_user_recommendations
+```
+
+## Triggers
+
+```sql
+trg_update_save_count
+trg_decrease_save_count
+trg_update_views_count
+trg_auto_expire
+trg_notify_on_new
 ```
 
 ---
 
-### Step 2 — Set Up the Database
+# 🔐 Authentication & Security
 
-Open your Oracle environment (SQL Developer, SQLPlus, or VS Code with SQLTools) and run the following files **in order**:
+The system uses:
+
+- JWT Authentication
+- Password Hashing with bcrypt
+- Protected Routes
+- Role-Based Access Control
+- Secure Session Management
+
+---
+
+# 🔌 API Endpoints
+
+## Search & Opportunities
+
+| Method | Endpoint | Description |
+|----------|----------|-------------|
+| GET | /api/search | Search opportunities |
+| GET | /api/search/:id | Opportunity details |
+| POST | /api/search/:id/view | Record opportunity view |
+| GET | /api/health | Server health check |
+
+---
+
+## Authentication
+
+| Method | Endpoint |
+|----------|----------|
+| POST | /api/auth/register |
+| POST | /api/auth/login |
+
+---
+
+## Bookmarks
+
+| Method | Endpoint |
+|----------|----------|
+| POST | /api/bookmarks |
+| DELETE | /api/bookmarks/:id |
+| GET | /api/bookmarks |
+
+---
+
+## Admin
+
+| Method | Endpoint |
+|----------|----------|
+| POST | /api/admin/opportunities |
+| PUT | /api/admin/opportunities/:id |
+| DELETE | /api/admin/opportunities/:id |
+| GET | /api/admin/stats |
+
+---
+
+# ⚙ Installation Guide
+
+## 1️⃣ Clone Repository
+
+```bash
+git clone https://github.com/zainab-hashmii/Campus-Opportunity-Aggregator.git
+
+cd Campus-Opportunity-Aggregator
+```
+
+---
+
+## 2️⃣ Setup Oracle Database
+
+Run the following files in Oracle SQL Developer or SQL*Plus:
 
 ```sql
--- 1. Create all tables, indexes, views, procedures, and triggers
 @database/schema.sql
 
--- 2. Insert sample data
 @database/seed.sql
 ```
 
-> Make sure you have the required privileges before running. If not, connect as SYSDBA and run:
-> ```sql
-> GRANT CREATE VIEW, CREATE PROCEDURE, CREATE TRIGGER TO your_username;
-> ```
+Grant privileges if required:
 
-> The connection string in `.env` should point to your pluggable database — typically `localhost/XEPDB1` for Oracle XE 21c and above.
+```sql
+GRANT CREATE VIEW TO your_user;
+
+GRANT CREATE PROCEDURE TO your_user;
+
+GRANT CREATE TRIGGER TO your_user;
+```
 
 ---
 
-### Step 3 — Set Up the Backend
+## 3️⃣ Setup Backend
+
+Navigate to backend:
 
 ```bash
 cd backend
+
 npm install
 ```
 
-Create a `.env` file inside the `backend` folder with your own Oracle credentials:
+Create a `.env` file:
 
-```
+```env
 PORT=5000
-DB_USER=your_oracle_username
-DB_PASSWORD=your_oracle_password
+
+DB_USER=your_username
+
+DB_PASSWORD=your_password
+
 DB_CONNECTION=localhost/XEPDB1
+
 JWT_SECRET=campus_opportunity_secret_key_2025
 ```
 
-> The `JWT_SECRET` must be **identical** across all team members' machines, otherwise login tokens generated on one machine will be rejected on another.
-
----
-
-### Step 4 — Run the Backend Server
+Start backend server:
 
 ```bash
 npm run dev
 ```
 
-You should see:
+Expected output:
 
-```
+```text
 Oracle connection pool created successfully
+
 Server running on http://localhost:5000
 ```
 
-Verify the server is running by visiting: http://localhost:5000/api/health
-
 ---
 
-### Step 5 — Set Up the Frontend
+## 4️⃣ Setup Frontend
 
 ```bash
-cd ../frontend
+cd frontend
+
 npm install
+
 npm start
 ```
 
-The React app will open at http://localhost:3000
+Application will run at:
 
----
-
-## API Endpoints
-
-### Search & Filter (Juwairiya)
-
-| Method | Endpoint | Description | Auth |
-|---|---|---|---|
-| GET | `/api/search` | Filter opportunities by category, dept, mode, paid, deadline | None |
-| GET | `/api/search/:id` | Get single opportunity by ID | None |
-| POST | `/api/search/:id/view` | Log a view, trigger increments views_count | None |
-| GET | `/api/health` | Server health check | None |
-
-**Example request:**
-```
-GET /api/search?category_id=1&dept_id=1&opp_mode=remote&is_paid=1
-```
-
-### Bookmarks & Auth (Zainab)
-
-| Method | Endpoint | Description | Auth |
-|---|---|---|---|
-| POST | `/api/auth/register` | Register a new student | None |
-| POST | `/api/auth/login` | Login and receive JWT token | None |
-| POST | `/api/bookmarks` | Save an opportunity | Required |
-| DELETE | `/api/bookmarks/:opp_id` | Remove a bookmark | Required |
-| GET | `/api/bookmarks` | Get all saved opportunities for logged-in user | Required |
-
-### Admin (Muskan)
-
-| Method | Endpoint | Description | Auth (Admin only) |
-|---|---|---|---|
-| POST | `/api/admin/opportunities` | Add a new opportunity with tags | Required |
-| PUT | `/api/admin/opportunities/:id` | Edit an opportunity | Required |
-| DELETE | `/api/admin/opportunities/:id` | Delete an opportunity | Required |
-| GET | `/api/admin/stats` | Get dashboard analytics | Required |
-
----
-
-## Environment Variables
-
-| Variable | Description | Example |
-|---|---|---|
-| `PORT` | Port the backend server runs on | `5000` |
-| `DB_USER` | Your Oracle database username | `campus_user` |
-| `DB_PASSWORD` | Your Oracle database password | `yourpassword` |
-| `DB_CONNECTION` | Oracle connection string | `localhost/XEPDB1` |
-| `JWT_SECRET` | Secret key for signing JWT tokens — must match across all machines | `campus_opportunity_secret_key_2025` |
-
-> Never commit your `.env` file to GitHub. It is listed in `.gitignore` and each team member must create their own locally.
-
----
-
-## After Pulling From GitHub
-
-If you have just pulled the latest changes, run:
-
-```bash
-# Reinstall backend dependencies if package.json changed
-cd backend
-npm install
-
-# Reinstall frontend dependencies if package.json changed
-cd ../frontend
-npm install
-
-# Re-run the database files if schema.sql changed
-# Open Oracle and run @database/schema.sql then @database/seed.sql
+```text
+http://localhost:3000
 ```
 
 ---
 
-## Completed Features
+# 🧪 Testing
 
-| Feature | Status | Built By |
-|---|---|---|
-| 12-table Oracle schema normalized to 3NF | Done | Juwairiya |
-| B-Tree, Composite, Function-Based indexes | Done | Juwairiya |
-| Active, ExpiringSoon, Trending views | Done | Juwairiya / Muskan |
-| FilterOpportunities stored procedure | Done | Juwairiya |
-| AddOpportunity stored procedure with transaction | Done | Juwairiya |
-| GetRecommendations stored procedure | Pending | Muskan |
-| views_count + save_count triggers | Done | Juwairiya |
-| Auto-expire + notify triggers | Pending | Zainab |
-| Seed data (10 opportunities) | Done | Juwairiya |
-| Node.js + Express backend | Done | Juwairiya |
-| Oracle connection pool | Done | Juwairiya |
-| JWT middleware | Done | Juwairiya |
-| Search + filter API route | Done | Juwairiya |
-| Responsive navbar | Done | Juwairiya |
-| Listings page with 4 filters | Done | Juwairiya |
-| Opportunity detail page | Done | Juwairiya |
-| Login / Register pages | Pending | Zainab |
-| Bookmark feature + saved page | Pending | Zainab |
-| Notifications bell | Pending | Zainab |
-| Admin dashboard + Chart.js | Pending | Muskan |
-| Recommendations section | Pending | Muskan |
-| Expiring soon section | Pending | Muskan |
-| Responsive audit + final polish | Pending | Muskan |
+The application was tested for:
+
+- User Registration & Login
+- JWT Authentication
+- Search & Filtering
+- Opportunity Management
+- Bookmark Functionality
+- Notifications
+- Stored Procedures
+- Trigger Execution
+- Database Transactions
+- API Integration
+- Responsive Design
 
 ---
 
-## Key Notes for Teammates
+# 📈 Future Enhancements
 
-**For Zainab** — pull the latest code before starting. The backend server, db.js, auth middleware, and frontend structure are all set up and working. You need to add `routes/bookmarks.js` and `routes/auth.js` to the backend, and build `LoginPage.jsx`, `RegisterPage.jsx`, `SavedPage.jsx`, and `NotificationBell.jsx` on the frontend. Your triggers `trg_auto_expire` and `trg_notify_on_new` also need to be added to `schema.sql`.
-
-**For Muskan** — pull the latest code before starting. Add `routes/admin.js` to the backend and build `AdminDashboard.jsx` on the frontend. The `get_user_recommendations` stored procedure and `trending_opportunities` view are already in `schema.sql` waiting to be called from your routes.
+- AI-Based Opportunity Recommendations
+- Email Notifications
+- Resume Parsing
+- Application Tracking System
+- Mobile Application
+- University Integration APIs
+- Advanced Analytics
+- AI Chatbot Assistance
 
 ---
 
-## License
+# 🎯 Learning Outcomes
 
-This project was developed for academic purposes as part of the Web Technologies and Advanced Database Management Systems courses.#   C a m p u s - O p p o r t u n i t y - A g g r e g a t o r 
- 
- 
+This project demonstrates practical implementation of:
+
+- Full Stack Web Development
+- Oracle Database Design
+- PL/SQL Programming
+- REST API Development
+- Authentication & Authorization
+- Database Optimization
+- Responsive UI Design
+- Software Testing
+- Deployment & Integration
+- Team Collaboration
+
+---
+
+# 📜 License
+
+This project was developed solely for academic purposes as part of the:
+
+**Web Technologies Course**
+
+and
+
+**Advanced Database Management Systems (ADMS) Course**
+
+---
+
+# 🙏 Acknowledgements
+
+Special thanks to:
+
+**Ms. Ayesha Hakim**
+
+for her valuable guidance, support, and supervision throughout the project.
+
+---
+
+## ⭐ Developed Using
+
+- React.js
+- Node.js
+- Express.js
+- Oracle Database
+- Tailwind CSS
+- JWT Authentication
+
+---
+
+### Made with ❤️ by Team Campus Opportunity Aggregator
