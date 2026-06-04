@@ -59,8 +59,7 @@ export default function RegisterPage() {
                 setLoading(false);
                 return;
             }
-            setSuccess(data.message || 'Account created! Redirecting to login...');
-            setTimeout(() => navigate('/login'), 2000);
+            setSuccess(data.message || 'Account created! Please check your inbox for the verification link.');
         } catch {
             setError('Could not connect to the server. Please try again.');
             setLoading(false);
@@ -195,11 +194,28 @@ export default function RegisterPage() {
                     {success && (
                         <div style={{
                             background: '#f0fdf4', border: '1px solid #bbf7d0',
-                            color: '#15803d', borderRadius: 10,
-                            padding: '11px 14px', fontSize: '0.85rem',
-                            marginBottom: 20, display: 'flex', alignItems: 'flex-start', gap: 8,
+                            borderRadius: 12, padding: '16px 18px',
+                            marginBottom: 20,
                         }}>
-                            <span style={{ flexShrink: 0 }}>✅</span> {success}
+                            <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 8 }}>
+                                <span style={{ fontSize: '1.4rem' }}>📧</span>
+                                <span style={{ fontWeight: 700, color: '#15803d', fontSize: '0.95rem' }}>
+                                    Check your inbox
+                                </span>
+                            </div>
+                            <p style={{ color: '#166534', fontSize: '0.85rem', lineHeight: 1.6, margin: 0 }}>
+                                {success}
+                            </p>
+                            <p style={{ color: '#4ade80', fontSize: '0.78rem', marginTop: 8 }}>
+                                Didn't get it? Check your spam folder, or{' '}
+                                <button
+                                    type="button"
+                                    onClick={() => navigate('/verify-email?token=resend')}
+                                    style={{ background: 'none', border: 'none', color: '#15803d', fontWeight: 700, cursor: 'pointer', textDecoration: 'underline', padding: 0, fontSize: '0.78rem' }}
+                                >
+                                    click here to resend
+                                </button>.
+                            </p>
                         </div>
                     )}
 

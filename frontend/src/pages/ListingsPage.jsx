@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import api from '../api';
 import OpportunityCard from '../components/OpportunityCard';
@@ -9,6 +9,57 @@ const CATEGORY_NAMES = {
     '4': 'Research',    '5': 'Courses',       '6': 'Exchange Programs',
     '7': 'Competitions','8': 'Workshops',
 };
+
+const CATEGORY_ICONS = {
+    'Internships': '💼', 'Scholarships': '🎓', 'Hackathons': '⚡',
+    'Research': '🔬', 'Courses': '📚', 'Exchange Programs': '✈️',
+    'Competitions': '🏆', 'Workshops': '🛠️',
+};
+
+function SkeletonCard() {
+    return (
+        <div style={{
+            background: 'linear-gradient(145deg, #17153a 0%, #120f2e 100%)',
+            border: '1px solid rgba(255,255,255,0.07)',
+            borderRadius: 20, padding: '20px', display: 'flex',
+            flexDirection: 'column', gap: 14,
+        }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <div className="shimmer" style={{ width: 90, height: 22, borderRadius: 100 }} />
+                <div className="shimmer" style={{ width: 60, height: 22, borderRadius: 100 }} />
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+                <div className="shimmer" style={{ width: '85%', height: 16, borderRadius: 6 }} />
+                <div className="shimmer" style={{ width: '60%', height: 12, borderRadius: 6 }} />
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+                <div className="shimmer" style={{ width: '100%', height: 11, borderRadius: 4 }} />
+                <div className="shimmer" style={{ width: '75%', height: 11, borderRadius: 4 }} />
+            </div>
+            <div style={{ display: 'flex', gap: 8 }}>
+                <div className="shimmer" style={{ width: 80, height: 22, borderRadius: 8 }} />
+                <div className="shimmer" style={{ width: 70, height: 22, borderRadius: 8 }} />
+            </div>
+            <div style={{ display: 'flex', justifyContent: 'space-between', paddingTop: 10, borderTop: '1px solid rgba(255,255,255,0.06)' }}>
+                <div className="shimmer" style={{ width: 80, height: 22, borderRadius: 100 }} />
+                <div className="shimmer" style={{ width: 50, height: 14, borderRadius: 4 }} />
+            </div>
+        </div>
+    );
+}
+
+// Shimmer shimmer shimmer override for dark background
+const darkShimmerStyle = `
+@keyframes shimmerDark {
+    0%   { background-position: -600px 0; }
+    100% { background-position:  600px 0; }
+}
+.shimmer {
+    background: linear-gradient(90deg, rgba(255,255,255,0.05) 25%, rgba(255,255,255,0.10) 50%, rgba(255,255,255,0.05) 75%);
+    background-size: 1200px 100%;
+    animation: shimmerDark 1.6s infinite;
+}
+`;
 
 export default function ListingsPage() {
     const [searchParams, setSearchParams] = useSearchParams();
@@ -21,10 +72,10 @@ export default function ListingsPage() {
     };
 
     const [opportunities, setOpportunities] = useState([]);
-    const [loading,     setLoading]     = useState(true);
-    const [error,       setError]       = useState(null);
-    const [searchTerm,  setSearchTerm]  = useState('');
-    const [filters,     setFilters]     = useState(initFilters);
+    const [loading,    setLoading]    = useState(true);
+    const [error,      setError]      = useState(null);
+    const [searchTerm, setSearchTerm] = useState('');
+    const [filters,    setFilters]    = useState(initFilters);
     const filtersRef = useRef(initFilters);
 
     async function fetchOpportunities(currentFilters) {
@@ -47,10 +98,9 @@ export default function ListingsPage() {
         }
     }
 
-    // On mount, fetch with whatever URL params came in
     useEffect(() => {
         fetchOpportunities(filtersRef.current);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     function handleFilterChange(key, value) {
@@ -71,67 +121,116 @@ export default function ListingsPage() {
         fetchOpportunities(newFilters);
     }
 
-    const today    = new Date();
-    const filtered = opportunities.filter(opp => {
-        if (new Date(opp.deadline) < today) return false;
+    const today = new Date();
+    const filtered = useMemo(() => {
         const q = searchTerm.toLowerCase();
-        return (
-            opp.title.toLowerCase().includes(q) ||
-            opp.description.toLowerCase().includes(q) ||
-            (opp.organization || '').toLowerCase().includes(q)
-        );
-    });
+        return opportunities.filter(opp => {
+            if (new Date(opp.deadline) < today) return false;
+            if (!q) return true;
+            return (
+                opp.title.toLowerCase().includes(q) ||
+                opp.description.toLowerCase().includes(q) ||
+                (opp.organization || '').toLowerCase().includes(q)
+            );
+        });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [opportunities, searchTerm]);
 
     const activeCategory = filters.category_id ? CATEGORY_NAMES[filters.category_id] : null;
+    const categoryIcon   = activeCategory ? CATEGORY_ICONS[activeCategory] : null;
 
     return (
-        <div>
+        <div style={{ background: '#0d0b23', minHeight: '100vh' }}>
+            <style>{darkShimmerStyle}</style>
+
             {/* ── Hero Banner ── */}
             <div style={{
                 background: 'linear-gradient(135deg, #0f0e2b 0%, #1e1b4b 55%, #312e81 100%)',
-                padding: '48px 24px 56px',
+                padding: '52px 24px 64px',
                 position: 'relative',
                 overflow: 'hidden',
             }}>
-                <div style={{ position: 'absolute', top: -60,  right: -60, width: 240, height: 240, borderRadius: '50%', background: 'rgba(167,139,250,0.09)',  pointerEvents: 'none' }} />
-                <div style={{ position: 'absolute', bottom: -40, left: '30%', width: 170, height: 170, borderRadius: '50%', background: 'rgba(109,40,217,0.12)',  pointerEvents: 'none' }} />
-                <div style={{ position: 'absolute', top: 20,   left: -40, width: 130, height: 130, borderRadius: '50%', background: 'rgba(245,158,11,0.06)', pointerEvents: 'none' }} />
+                {/* Background shapes */}
+                <div className="hero-shape hero-shape-1" />
+                <div className="hero-shape hero-shape-2" />
+                <div className="hero-shape hero-shape-3" />
+                <div className="hero-shape hero-shape-4" />
+                <div className="hero-grid" />
 
                 <div className="max-w-7xl mx-auto relative">
                     <div className="fade-up">
-                        <p style={{ fontSize: '0.75rem', letterSpacing: '0.12em', textTransform: 'uppercase', color: '#fbbf24', fontWeight: 600, marginBottom: 10 }}>
-                            Campus Opportunity Aggregator · NUST
-                        </p>
-                        <h1 style={{ fontFamily: "'Playfair Display', serif", fontSize: 'clamp(1.8rem, 4vw, 2.6rem)', fontWeight: 700, color: '#ffffff', lineHeight: 1.2, marginBottom: 10 }}>
+                        <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, marginBottom: 14 }}>
+                            <span style={{
+                                display: 'inline-flex', alignItems: 'center', gap: 6,
+                                background: 'rgba(245,158,11,0.15)',
+                                border: '1px solid rgba(245,158,11,0.30)',
+                                borderRadius: 100, padding: '5px 14px',
+                                fontSize: '0.72rem', fontWeight: 700,
+                                color: '#fbbf24', letterSpacing: '0.08em', textTransform: 'uppercase',
+                            }}>
+                                <span className="pulse-dot" style={{
+                                    width: 6, height: 6, borderRadius: '50%',
+                                    background: '#fbbf24', display: 'inline-block',
+                                }} />
+                                Campus Opportunity Aggregator · NUST
+                            </span>
+                        </div>
+
+                        <h1 style={{
+                            fontFamily: "'Playfair Display', serif",
+                            fontSize: 'clamp(2rem, 4.5vw, 3rem)',
+                            fontWeight: 800, color: '#fff',
+                            lineHeight: 1.15, marginBottom: 14,
+                        }}>
                             {activeCategory ? (
-                                <>{activeCategory} <span style={{ color: '#fbbf24' }}>Opportunities</span></>
+                                <>
+                                    {categoryIcon && <span style={{ marginRight: 10 }}>{categoryIcon}</span>}
+                                    {activeCategory}{' '}
+                                    <span style={{ color: '#fbbf24' }}>Opportunities</span>
+                                </>
                             ) : (
-                                <>Find Your Edge — <span style={{ color: '#fbbf24' }}>Browse Every Opportunity</span></>
+                                <>Find Your Edge —{' '}
+                                    <span style={{
+                                        background: 'linear-gradient(90deg, #fbbf24, #f472b6)',
+                                        WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent',
+                                    }}>
+                                        Browse Every Opportunity
+                                    </span>
+                                </>
                             )}
                         </h1>
-                        <p style={{ color: 'rgba(255,255,255,0.55)', fontSize: '0.95rem', maxWidth: 520, lineHeight: 1.6 }}>
+
+                        <p style={{
+                            color: 'rgba(255,255,255,0.52)', fontSize: '1rem',
+                            maxWidth: 540, lineHeight: 1.65,
+                        }}>
                             {activeCategory
-                                ? `Showing all ${activeCategory.toLowerCase()} opportunities verified and curated for NUST students.`
-                                : 'Internships at Google & Careem, scholarships to Germany & Oxford, hackathons with PKR 500K prizes — all in one place.'
-                            }
+                                ? `All ${activeCategory.toLowerCase()} opportunities verified and curated for NUST students.`
+                                : 'Internships at top companies, global scholarships, hackathons with big prizes — all in one place.'}
                         </p>
                     </div>
 
-                    {/* Active category chip + stats */}
-                    <div className="fade-up fade-up-delay-1 flex gap-4 mt-6 flex-wrap items-center">
+                    {/* Chips row */}
+                    <div className="fade-up fade-up-delay-1" style={{ display: 'flex', gap: 10, marginTop: 24, flexWrap: 'wrap', alignItems: 'center' }}>
                         {activeCategory && (
                             <div style={{
                                 display: 'inline-flex', alignItems: 'center', gap: 8,
-                                background: 'rgba(245,158,11,0.18)',
+                                background: 'rgba(245,158,11,0.15)',
                                 border: '1px solid rgba(245,158,11,0.35)',
-                                borderRadius: 100, padding: '6px 14px',
+                                borderRadius: 100, padding: '7px 16px',
                             }}>
                                 <span style={{ color: '#fbbf24', fontSize: '0.82rem', fontWeight: 600 }}>
-                                    📌 Filtered: {activeCategory}
+                                    Filtered: {activeCategory}
                                 </span>
                                 <button
                                     onClick={clearCategoryFilter}
-                                    style={{ background: 'none', border: 'none', color: 'rgba(255,255,255,0.5)', cursor: 'pointer', fontSize: '1rem', lineHeight: 1, padding: 0 }}
+                                    style={{
+                                        background: 'rgba(255,255,255,0.12)', border: 'none',
+                                        color: '#fff', cursor: 'pointer',
+                                        width: 18, height: 18, borderRadius: '50%',
+                                        display: 'flex', alignItems: 'center', justifyContent: 'center',
+                                        fontSize: '0.75rem', lineHeight: 1, padding: 0,
+                                    }}
                                     title="Clear filter"
                                 >
                                     ×
@@ -140,64 +239,137 @@ export default function ListingsPage() {
                         )}
 
                         {!loading && !error && (
-                            <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
+                            <>
                                 {[
-                                    { label: 'Total', value: opportunities.length },
-                                    { label: 'Showing', value: filtered.length },
+                                    { label: 'Total fetched', value: opportunities.length, color: '#a78bfa' },
+                                    { label: 'Showing',       value: filtered.length,      color: '#34d399' },
                                 ].map(stat => (
                                     <div key={stat.label} style={{
-                                        background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.12)',
-                                        borderRadius: 10, padding: '8px 16px', backdropFilter: 'blur(8px)',
+                                        background: 'rgba(255,255,255,0.07)',
+                                        border: '1px solid rgba(255,255,255,0.12)',
+                                        borderRadius: 12, padding: '8px 18px',
+                                        backdropFilter: 'blur(10px)',
+                                        display: 'flex', alignItems: 'baseline', gap: 6,
                                     }}>
-                                        <span style={{ color: '#fbbf24', fontWeight: 700, fontSize: '1.1rem' }}>{stat.value}</span>
-                                        <span style={{ color: 'rgba(255,255,255,0.5)', fontSize: '0.75rem', marginLeft: 6 }}>{stat.label}</span>
+                                        <span style={{ color: stat.color, fontWeight: 800, fontSize: '1.15rem' }}>{stat.value}</span>
+                                        <span style={{ color: 'rgba(255,255,255,0.4)', fontSize: '0.75rem' }}>{stat.label}</span>
                                     </div>
                                 ))}
-                            </div>
+                            </>
                         )}
                     </div>
                 </div>
             </div>
 
             {/* ── Main content ── */}
-            <div className="max-w-7xl mx-auto px-4 py-8">
-                <div className="mb-6 fade-up fade-up-delay-2">
-                    <FilterBar
-                        filters={filters}
-                        onFilterChange={handleFilterChange}
-                        onSearch={handleSearch}
-                        searchTerm={searchTerm}
-                        onSearchChange={setSearchTerm}
-                    />
+            <div style={{ background: '#0d0b23' }}>
+                <div className="max-w-7xl mx-auto px-4 py-8">
+
+                    {/* FilterBar sits flush with the dark bg */}
+                    <div className="mb-8 fade-up fade-up-delay-2">
+                        <FilterBar
+                            filters={filters}
+                            onFilterChange={handleFilterChange}
+                            onSearch={handleSearch}
+                            searchTerm={searchTerm}
+                            onSearchChange={setSearchTerm}
+                        />
+                    </div>
+
+                    {/* Loading skeletons */}
+                    {loading && (
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+                            {Array.from({ length: 6 }).map((_, i) => (
+                                <SkeletonCard key={i} />
+                            ))}
+                        </div>
+                    )}
+
+                    {/* Error state */}
+                    {error && (
+                        <div style={{
+                            background: 'rgba(239,68,68,0.10)',
+                            border: '1px solid rgba(239,68,68,0.30)',
+                            color: '#fca5a5', borderRadius: 14,
+                            padding: '16px 20px', fontSize: '0.875rem',
+                            display: 'flex', alignItems: 'center', gap: 10,
+                        }}>
+                            <span style={{ fontSize: '1.2rem' }}>⚠️</span>
+                            {error}
+                        </div>
+                    )}
+
+                    {/* Empty state */}
+                    {!loading && !error && filtered.length === 0 && (
+                        <div style={{
+                            textAlign: 'center', padding: '80px 20px',
+                            display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 12,
+                        }}>
+                            <div style={{
+                                width: 72, height: 72, borderRadius: '50%',
+                                background: 'rgba(109,40,217,0.15)',
+                                border: '1px solid rgba(167,139,250,0.20)',
+                                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                                fontSize: '2rem', marginBottom: 4,
+                            }}>
+                                🔍
+                            </div>
+                            <p style={{ color: '#e2e0ff', fontSize: '1.1rem', fontWeight: 600 }}>
+                                No opportunities found
+                            </p>
+                            <p style={{ color: 'rgba(255,255,255,0.35)', fontSize: '0.875rem' }}>
+                                Try adjusting your filters or search term
+                            </p>
+                            {(activeCategory || searchTerm) && (
+                                <button
+                                    onClick={() => { clearCategoryFilter(); setSearchTerm(''); }}
+                                    style={{
+                                        marginTop: 8, background: 'rgba(109,40,217,0.20)',
+                                        border: '1px solid rgba(167,139,250,0.30)',
+                                        color: '#c4b5fd', borderRadius: 10,
+                                        padding: '8px 20px', fontSize: '0.85rem',
+                                        fontWeight: 600, cursor: 'pointer',
+                                    }}
+                                >
+                                    Clear all filters
+                                </button>
+                            )}
+                        </div>
+                    )}
+
+                    {/* Results grid */}
+                    {!loading && !error && filtered.length > 0 && (
+                        <>
+                            {/* Section label */}
+                            <div style={{
+                                display: 'flex', alignItems: 'center', gap: 10,
+                                marginBottom: 20,
+                            }}>
+                                <div style={{
+                                    height: 1, flex: 1,
+                                    background: 'linear-gradient(90deg, rgba(167,139,250,0.25), transparent)',
+                                }} />
+                                <span style={{
+                                    color: 'rgba(167,139,250,0.6)', fontSize: '0.75rem',
+                                    fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase',
+                                    whiteSpace: 'nowrap',
+                                }}>
+                                    {filtered.length} result{filtered.length !== 1 ? 's' : ''}
+                                </span>
+                                <div style={{
+                                    height: 1, flex: 1,
+                                    background: 'linear-gradient(90deg, transparent, rgba(167,139,250,0.25))',
+                                }} />
+                            </div>
+
+                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 fade-up fade-up-delay-3">
+                                {filtered.map(opp => (
+                                    <OpportunityCard key={opp.opp_id} opportunity={opp} />
+                                ))}
+                            </div>
+                        </>
+                    )}
                 </div>
-
-                {loading && (
-                    <div className="flex justify-center items-center py-20">
-                        <div className="animate-spin rounded-full h-10 w-10 border-4 border-indigo-500 border-t-transparent" />
-                    </div>
-                )}
-
-                {error && (
-                    <div style={{ background: '#fef2f2', border: '1px solid #fecaca', color: '#dc2626', borderRadius: 12, padding: '14px 18px', fontSize: '0.875rem' }}>
-                        {error}
-                    </div>
-                )}
-
-                {!loading && !error && filtered.length === 0 && (
-                    <div className="text-center py-20">
-                        <p className="text-5xl mb-4">🔍</p>
-                        <p style={{ color: '#6b7280', fontSize: '1.1rem', fontWeight: 500 }}>No opportunities found</p>
-                        <p style={{ color: '#9ca3af', fontSize: '0.875rem', marginTop: 4 }}>Try adjusting your filters or search term</p>
-                    </div>
-                )}
-
-                {!loading && !error && filtered.length > 0 && (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 fade-up fade-up-delay-3">
-                        {filtered.map(opp => (
-                            <OpportunityCard key={opp.opp_id} opportunity={opp} />
-                        ))}
-                    </div>
-                )}
             </div>
         </div>
     );

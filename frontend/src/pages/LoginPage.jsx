@@ -8,8 +8,9 @@ export default function LoginPage() {
 
   const [role, setRole] = useState("student"); // 'student' | 'admin'
   const [form, setForm] = useState({ email: "", password: "" });
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [error, setError]           = useState("");
+  const [unverified, setUnverified] = useState(false);
+  const [loading, setLoading]       = useState(false);
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -18,6 +19,7 @@ export default function LoginPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
+    setUnverified(false);
     setLoading(true);
 
     try {
@@ -31,7 +33,12 @@ export default function LoginPage() {
       const data = await res.json();
 
       if (!res.ok) {
-        setError(data.message || "Login failed.");
+        if (data.unverified) {
+          setUnverified(true);
+          setError(data.message);
+        } else {
+          setError(data.message || "Login failed.");
+        }
         setLoading(false);
         return;
       }
@@ -119,10 +126,24 @@ export default function LoginPage() {
           }
         </div>
 
-        {/* Error */}
-        {error && (
-          <div className="bg-red-50 text-red-600 border border-red-200 rounded-lg p-3 mb-4 text-sm">
-            {error}
+        {/* Error / unverified banner */}
+        {error && !unverified && (
+          <div style={{ background: '#fef2f2', border: '1px solid #fecaca', color: '#dc2626', borderRadius: 10, padding: '11px 14px', fontSize: '0.85rem', marginBottom: 16, display: 'flex', gap: 8 }}>
+            <span>⚠️</span> {error}
+          </div>
+        )}
+        {unverified && (
+          <div style={{ background: '#fffbeb', border: '1px solid #fde68a', borderRadius: 10, padding: '14px 16px', fontSize: '0.85rem', marginBottom: 16 }}>
+            <div style={{ display: 'flex', gap: 8, alignItems: 'flex-start', color: '#92400e', marginBottom: 8 }}>
+              <span>📧</span>
+              <span>{error}</span>
+            </div>
+            <Link
+              to="/verify-email?token=resend"
+              style={{ fontSize: '0.8rem', color: '#7c3aed', fontWeight: 700, textDecoration: 'underline' }}
+            >
+              Resend verification email →
+            </Link>
           </div>
         )}
 

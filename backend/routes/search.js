@@ -47,7 +47,12 @@ router.get('/', async (req, res) => {
         }
 
         const opps = await Opportunity
-            .find(filter)
+            .find(filter,
+                'title description organization category_name dept_name ' +
+                'deadline opp_mode location is_paid stipend duration ' +
+                'required_skills eligibility application_link tags ' +
+                'views_count save_count posted_by created_at status'
+            )
             .populate('posted_by', 'user_name')
             .sort({ deadline: 1 })
             .lean();

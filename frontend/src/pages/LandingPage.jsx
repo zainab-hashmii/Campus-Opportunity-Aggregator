@@ -329,10 +329,6 @@ export default function LandingPage() {
                     ))}
                 </div>
 
-                {/* ── SCROLL INDICATOR ── */}
-                <div className="scroll-indicator" style={{ zIndex: 10 }}>
-                    <div className="scroll-dot" />
-                </div>
 
                 {/* ── SLIDE COUNTER (top-right) ── */}
                 <div style={{

@@ -32,4 +32,11 @@ opportunitySchema.pre('save', function (next) {
     next();
 });
 
+// Compound indexes for common filter patterns
+opportunitySchema.index({ status: 1, deadline: 1 });
+opportunitySchema.index({ status: 1, deadline: 1, category_id: 1 });
+opportunitySchema.index({ status: 1, deadline: 1, dept_id: 1 });
+opportunitySchema.index({ status: 1, deadline: 1, opp_mode: 1 });
+opportunitySchema.index({ status: 1, deadline: 1, is_paid: 1 });
+
 module.exports = mongoose.model('Opportunity', opportunitySchema);
