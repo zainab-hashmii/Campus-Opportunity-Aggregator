@@ -230,19 +230,11 @@ export default function ListingsPage() {
                                 <>
                                     {categoryIcon && <span style={{ marginRight: 10 }}>{categoryIcon}</span>}
                                     {activeCategory}{' '}
-                                    <span style={{
-                                        background: 'linear-gradient(135deg, #a78bfa, #c4b5fd)',
-                                        WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent',
-                                    }}>Opportunities</span>
+                                    <span className="grad-text">Opportunities</span>
                                 </>
                             ) : (
                                 <>Find Your Edge —{' '}
-                                    <span style={{
-                                        background: 'linear-gradient(135deg, #a78bfa 0%, #c4b5fd 50%, #e0d7ff 100%)',
-                                        WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent',
-                                    }}>
-                                        Browse Every Opportunity
-                                    </span>
+                                    <span className="grad-text">Browse Every Opportunity</span>
                                 </>
                             )}
                         </h1>

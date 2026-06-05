@@ -32,7 +32,7 @@ export default function Navbar() {
 
                     {/* Logo */}
                     <Link
-                        to="/opportunities"
+                        to="/"
                         className="flex items-center gap-2.5 group"
                         style={{ textDecoration: 'none' }}>
                         <div style={{
