@@ -135,14 +135,6 @@ router.post('/login', async (req, res) => {
             return res.status(401).json({ message: 'Invalid email or password.' });
         }
 
-        // Admins bypass email verification
-        if (!user.is_verified && user.role_id !== 1) {
-            return res.status(403).json({
-                message: 'Please verify your email before logging in. Check your inbox for the verification link.',
-                unverified: true,
-            });
-        }
-
         const token = jwt.sign(
             { user_id: user._id, user_name: user.user_name, email: user.email, role_id: user.role_id },
             process.env.JWT_SECRET,
