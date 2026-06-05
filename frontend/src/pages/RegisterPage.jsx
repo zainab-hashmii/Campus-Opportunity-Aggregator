@@ -63,7 +63,7 @@ export default function RegisterPage() {
                 setLoading(false);
                 return;
             }
-            setSuccess(data.message || 'Account created! Please check your inbox for the verification link.');
+            setSuccess(data.message || 'Account created successfully! You can now log in.');
         } catch {
             setError('Could not connect to the server. Please try again.');
             setLoading(false);
@@ -197,152 +197,146 @@ export default function RegisterPage() {
                     )}
                     {success && (
                         <div style={{
-                            background: '#f0fdf4', border: '1px solid #bbf7d0',
-                            borderRadius: 12, padding: '16px 18px',
-                            marginBottom: 20,
+                            background: '#f0fdf4', border: '1px solid #6ee7b7',
+                            borderRadius: 14, padding: '24px 22px',
+                            textAlign: 'center',
                         }}>
-                            <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 8 }}>
-                                <span style={{ fontSize: '1.4rem' }}>📧</span>
-                                <span style={{ fontWeight: 700, color: '#15803d', fontSize: '0.95rem' }}>
-                                    Check your inbox
-                                </span>
-                            </div>
-                            <p style={{ color: '#166534', fontSize: '0.85rem', lineHeight: 1.6, margin: 0 }}>
-                                {success}
+                            <div style={{ fontSize: '2.5rem', marginBottom: 10 }}>🎉</div>
+                            <p style={{ fontWeight: 700, color: '#065f46', fontSize: '1rem', marginBottom: 6 }}>
+                                Account Created!
                             </p>
-                            <p style={{ color: '#4ade80', fontSize: '0.78rem', marginTop: 8 }}>
-                                Didn't get it? Check your spam folder, or{' '}
-                                <button
-                                    type="button"
-                                    onClick={() => navigate('/verify-email?token=resend')}
-                                    style={{ background: 'none', border: 'none', color: '#15803d', fontWeight: 700, cursor: 'pointer', textDecoration: 'underline', padding: 0, fontSize: '0.78rem' }}
-                                >
-                                    click here to resend
-                                </button>.
+                            <p style={{ color: '#047857', fontSize: '0.84rem', lineHeight: 1.6, marginBottom: 18 }}>
+                                A confirmation email has been sent to your inbox. You can log in right away.
                             </p>
+                            <button
+                                type="button"
+                                onClick={() => navigate('/login')}
+                                style={{
+                                    background: 'linear-gradient(135deg, #7c3aed, #6d28d9)',
+                                    color: '#fff', border: 'none', borderRadius: 10,
+                                    padding: '10px 28px', fontWeight: 700,
+                                    fontSize: '0.9rem', cursor: 'pointer',
+                                    fontFamily: "'DM Sans', sans-serif",
+                                    boxShadow: '0 4px 14px rgba(109,40,217,0.35)',
+                                }}
+                            >
+                                Go to Login →
+                            </button>
                         </div>
                     )}
 
-                    <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 18 }}>
-                        {/* Username */}
-                        <FormField label="Username">
-                            <input
-                                type="text" name="user_name"
-                                value={form.user_name} onChange={handleChange}
-                                required placeholder="e.g. zainab_hashmi"
-                                style={inputStyle}
-                                onFocus={e => e.target.style.borderColor = '#7c3aed'}
-                                onBlur={e => e.target.style.borderColor = '#d1d5db'}
-                            />
-                        </FormField>
+                    {!success && (
+                        <div>
+                            <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 18 }}>
+                                <FormField label="Username">
+                                    <input
+                                        type="text" name="user_name"
+                                        value={form.user_name} onChange={handleChange}
+                                        required placeholder="e.g. zainab_hashmi"
+                                        style={inputStyle}
+                                        onFocus={e => e.target.style.borderColor = '#7c3aed'}
+                                        onBlur={e => e.target.style.borderColor = '#d1d5db'}
+                                    />
+                                </FormField>
 
-                        {/* Email */}
-                        <FormField label="Email">
-                            <input
-                                type="email" name="email"
-                                value={form.email} onChange={handleChange}
-                                required placeholder="example@gmail.com"
-                                style={inputStyle}
-                                onFocus={e => e.target.style.borderColor = '#7c3aed'}
-                                onBlur={e => e.target.style.borderColor = '#d1d5db'}
-                            />
-                        </FormField>
+                                <FormField label="Email">
+                                    <input
+                                        type="email" name="email"
+                                        value={form.email} onChange={handleChange}
+                                        required placeholder="example@gmail.com"
+                                        style={inputStyle}
+                                        onFocus={e => e.target.style.borderColor = '#7c3aed'}
+                                        onBlur={e => e.target.style.borderColor = '#d1d5db'}
+                                    />
+                                </FormField>
 
-                        {/* Department */}
-                        <FormField label="Department">
-                            <select
-                                name="dept_id" value={form.dept_id}
-                                onChange={handleChange} required
-                                style={{ ...inputStyle, cursor: 'pointer', color: form.dept_id ? '#1a1f36' : '#9ca3af' }}
-                                onFocus={e => e.target.style.borderColor = '#7c3aed'}
-                                onBlur={e => e.target.style.borderColor = '#d1d5db'}
-                            >
-                                <option value="" disabled>Select your department</option>
-                                {DEPARTMENTS.map(d => (
-                                    <option key={d.value} value={d.value}>{d.label}</option>
-                                ))}
-                            </select>
-                        </FormField>
+                                <FormField label="Department">
+                                    <select
+                                        name="dept_id" value={form.dept_id}
+                                        onChange={handleChange} required
+                                        style={{ ...inputStyle, cursor: 'pointer', color: form.dept_id ? '#1a1f36' : '#9ca3af' }}
+                                        onFocus={e => e.target.style.borderColor = '#7c3aed'}
+                                        onBlur={e => e.target.style.borderColor = '#d1d5db'}
+                                    >
+                                        <option value="" disabled>Select your department</option>
+                                        {DEPARTMENTS.map(d => (
+                                            <option key={d.value} value={d.value}>{d.label}</option>
+                                        ))}
+                                    </select>
+                                </FormField>
 
-                        {/* Password */}
-                        <FormField label="Password">
-                            <input
-                                type="password" name="password"
-                                value={form.password} onChange={handleChange}
-                                required placeholder="Min. 6 characters"
-                                style={inputStyle}
-                                onFocus={e => e.target.style.borderColor = '#7c3aed'}
-                                onBlur={e => e.target.style.borderColor = '#d1d5db'}
-                            />
-                            {passwordStrength && (
-                                <div style={{ marginTop: 7 }}>
-                                    <div style={{ height: 3, background: '#e5e7eb', borderRadius: 99, overflow: 'hidden' }}>
-                                        <div style={{
-                                            height: '100%', width: passwordStrength.width,
-                                            background: passwordStrength.color,
-                                            borderRadius: 99,
-                                            transition: 'width 0.3s ease, background 0.3s ease',
-                                        }} />
-                                    </div>
-                                    <div style={{ fontSize: '0.72rem', color: passwordStrength.color, marginTop: 4, fontWeight: 600 }}>
-                                        {passwordStrength.label}
-                                    </div>
-                                </div>
-                            )}
-                        </FormField>
+                                <FormField label="Password">
+                                    <input
+                                        type="password" name="password"
+                                        value={form.password} onChange={handleChange}
+                                        required placeholder="Min. 6 characters"
+                                        style={inputStyle}
+                                        onFocus={e => e.target.style.borderColor = '#7c3aed'}
+                                        onBlur={e => e.target.style.borderColor = '#d1d5db'}
+                                    />
+                                    {passwordStrength && (
+                                        <div style={{ marginTop: 7 }}>
+                                            <div style={{ height: 3, background: '#e5e7eb', borderRadius: 99, overflow: 'hidden' }}>
+                                                <div style={{
+                                                    height: '100%', width: passwordStrength.width,
+                                                    background: passwordStrength.color, borderRadius: 99,
+                                                    transition: 'width 0.3s ease, background 0.3s ease',
+                                                }} />
+                                            </div>
+                                            <div style={{ fontSize: '0.72rem', color: passwordStrength.color, marginTop: 4, fontWeight: 600 }}>
+                                                {passwordStrength.label}
+                                            </div>
+                                        </div>
+                                    )}
+                                </FormField>
 
-                        {/* Confirm Password */}
-                        <FormField label="Confirm Password">
-                            <input
-                                type="password" name="confirm"
-                                value={form.confirm} onChange={handleChange}
-                                required placeholder="Re-enter your password"
-                                style={{
-                                    ...inputStyle,
-                                    borderColor: form.confirm && form.confirm !== form.password ? '#ef4444' : '#d1d5db',
-                                }}
-                                onFocus={e => e.target.style.borderColor = form.confirm !== form.password ? '#ef4444' : '#4f46e5'}
-                                onBlur={e => e.target.style.borderColor = form.confirm && form.confirm !== form.password ? '#ef4444' : '#d1d5db'}
-                            />
-                            {form.confirm && form.confirm !== form.password && (
-                                <p style={{ color: '#ef4444', fontSize: '0.75rem', marginTop: 4 }}>Passwords do not match</p>
-                            )}
-                        </FormField>
+                                <FormField label="Confirm Password">
+                                    <input
+                                        type="password" name="confirm"
+                                        value={form.confirm} onChange={handleChange}
+                                        required placeholder="Re-enter your password"
+                                        style={{
+                                            ...inputStyle,
+                                            borderColor: form.confirm && form.confirm !== form.password ? '#ef4444' : '#d1d5db',
+                                        }}
+                                        onFocus={e => e.target.style.borderColor = form.confirm !== form.password ? '#ef4444' : '#4f46e5'}
+                                        onBlur={e => e.target.style.borderColor = form.confirm && form.confirm !== form.password ? '#ef4444' : '#d1d5db'}
+                                    />
+                                    {form.confirm && form.confirm !== form.password && (
+                                        <p style={{ color: '#ef4444', fontSize: '0.75rem', marginTop: 4 }}>Passwords do not match</p>
+                                    )}
+                                </FormField>
 
-                        {/* Submit */}
-                        <button
-                            type="submit"
-                            disabled={loading || !!success}
-                            style={{
+                                <button
+                                    type="submit"
+                                    disabled={loading}
+                                    style={{
                                         width: '100%',
-                                background: loading || success ? '#c4b5fd' : 'linear-gradient(135deg, #7c3aed, #6d28d9)',
-                                color: '#fff',
-                                border: 'none',
-                                borderRadius: 10,
-                                padding: '12px',
-                                fontSize: '0.93rem',
-                                fontWeight: 700,
-                                cursor: loading || success ? 'not-allowed' : 'pointer',
-                                fontFamily: "'DM Sans', sans-serif",
-                                letterSpacing: '0.01em',
-                                marginTop: 4,
-                                boxShadow: loading || success ? 'none' : '0 4px 18px rgba(109,40,217,0.40)',
-                            }}
-                        >
-                            {loading ? 'Creating account...' : success ? 'Account created!' : 'Create Account'}
-                        </button>
-                    </form>
+                                        background: loading ? '#c4b5fd' : 'linear-gradient(135deg, #7c3aed, #6d28d9)',
+                                        color: '#fff', border: 'none', borderRadius: 10,
+                                        padding: '12px', fontSize: '0.93rem', fontWeight: 700,
+                                        cursor: loading ? 'not-allowed' : 'pointer',
+                                        fontFamily: "'DM Sans', sans-serif",
+                                        letterSpacing: '0.01em', marginTop: 4,
+                                        boxShadow: loading ? 'none' : '0 4px 18px rgba(109,40,217,0.40)',
+                                    }}
+                                >
+                                    {loading ? 'Creating account...' : 'Create Account'}
+                                </button>
+                            </form>
 
-                    <div style={{
-                        textAlign: 'center', marginTop: 22,
-                        paddingTop: 20, borderTop: '1px solid #f3f4f6',
-                        fontSize: '0.86rem', color: '#9ca3af',
-                    }}>
-                        Already have an account?{' '}
-                        <Link to="/login" style={{ color: '#7c3aed', fontWeight: 600, textDecoration: 'none' }}>
-                            Sign in
-                        </Link>
-                    </div>
+                            <div style={{
+                                textAlign: 'center', marginTop: 22,
+                                paddingTop: 20, borderTop: '1px solid #f3f4f6',
+                                fontSize: '0.86rem', color: '#9ca3af',
+                            }}>
+                                Already have an account?{' '}
+                                <Link to="/login" style={{ color: '#7c3aed', fontWeight: 600, textDecoration: 'none' }}>
+                                    Sign in
+                                </Link>
+                            </div>
+                        </div>
+                    )}
                 </div>
             </div>
         </div>
