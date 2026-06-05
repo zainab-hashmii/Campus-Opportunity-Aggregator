@@ -47,13 +47,15 @@ export default function AdminDashboard() {
 
     const departments = [
         { id: 1, name: 'Computer Science' },
-        { id: 2, name: 'Electrical Engineering' },
-        { id: 3, name: 'Mechanical Engineering' },
-        { id: 4, name: 'Civil Engineering' },
-        { id: 5, name: 'Business Administration' },
-        { id: 6, name: 'Mathematics' },
-        { id: 7, name: 'Physics' },
-        { id: 8, name: 'All Departments' },
+        { id: 2, name: 'Business Administration' },
+        { id: 3, name: 'Electrical Engineering' },
+        { id: 4, name: 'Media Studies' },
+        { id: 5, name: 'Mathematics' },
+        { id: 6, name: 'Psychology' },
+        { id: 7, name: 'Biotechnology' },
+        { id: 8, name: 'Chemistry' },
+        { id: 9, name: 'Mechanical Engineering' },
+        { id: 10, name: 'Aerospace Engineering' },
     ];
 
     useEffect(() => {

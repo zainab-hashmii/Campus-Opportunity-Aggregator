@@ -4,6 +4,26 @@ import api from '../api';
 import { useAuth } from '../context/AuthContext';
 import { useSaved } from '../context/SavedContext';
 
+const CATEGORY_STYLES = {
+    'Internship':       { bg: 'rgba(59,130,246,0.15)',  border: 'rgba(59,130,246,0.35)',  text: '#93c5fd' },
+    'Scholarship':      { bg: 'rgba(168,85,247,0.15)',  border: 'rgba(168,85,247,0.35)',  text: '#d8b4fe' },
+    'Hackathon':        { bg: 'rgba(249,115,22,0.15)',  border: 'rgba(249,115,22,0.35)',  text: '#fdba74' },
+    'Workshop':         { bg: 'rgba(20,184,166,0.15)',  border: 'rgba(20,184,166,0.35)',  text: '#5eead4' },
+    'Competition':      { bg: 'rgba(236,72,153,0.15)',  border: 'rgba(236,72,153,0.35)',  text: '#f9a8d4' },
+    'Research':         { bg: 'rgba(99,102,241,0.15)',  border: 'rgba(99,102,241,0.35)',  text: '#a5b4fc' },
+    'Exchange Program': { bg: 'rgba(6,182,212,0.15)',   border: 'rgba(6,182,212,0.35)',   text: '#67e8f9' },
+    'Course':           { bg: 'rgba(16,185,129,0.15)',  border: 'rgba(16,185,129,0.35)',  text: '#6ee7b7' },
+};
+const DEFAULT_STYLE = { bg: 'rgba(156,163,175,0.15)', border: 'rgba(156,163,175,0.3)', text: '#d1d5db' };
+
+function getDeadlineInfo(deadline) {
+    const daysLeft = Math.ceil((new Date(deadline) - new Date()) / 86400000);
+    if (daysLeft < 0)   return { label: 'Deadline passed', color: '#6b7280', bg: 'rgba(107,114,128,0.12)', border: 'rgba(107,114,128,0.25)' };
+    if (daysLeft === 0) return { label: 'Due today',       color: '#ef4444', bg: 'rgba(239,68,68,0.12)',   border: 'rgba(239,68,68,0.35)' };
+    if (daysLeft <= 3)  return { label: `${daysLeft}d left`, color: '#ef4444', bg: 'rgba(239,68,68,0.12)', border: 'rgba(239,68,68,0.35)' };
+    if (daysLeft <= 7)  return { label: `${daysLeft}d left`, color: '#f59e0b', bg: 'rgba(245,158,11,0.12)', border: 'rgba(245,158,11,0.35)' };
+    return { label: `${daysLeft} days left`, color: '#10b981', bg: 'rgba(16,185,129,0.12)', border: 'rgba(16,185,129,0.30)' };
+}
 
 export default function DetailPage() {
     const { id } = useParams();
@@ -13,10 +33,8 @@ export default function DetailPage() {
     const [opportunity, setOpportunity] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-
     const saved = isSaved(id);
 
-    // Apply modal state
     const [showApply, setShowApply] = useState(false);
     const [applyForm, setApplyForm] = useState({ name: '', email: '', statement: '' });
     const [applyStatus, setApplyStatus] = useState(null);
@@ -38,46 +56,11 @@ export default function DetailPage() {
         fetchOpportunity();
     }, [id]);
 
-    function getDeadlineColor(deadline) {
-        const today = new Date();
-        const deadlineDate = new Date(deadline);
-        const daysLeft = Math.ceil((deadlineDate - today) / (1000 * 60 * 60 * 24));
-        if (daysLeft < 0) return 'bg-gray-100 text-gray-400 border-gray-200';  // ← add this
-        if (daysLeft <= 3) return 'bg-red-100 text-red-700 border-red-200';
-        if (daysLeft <= 7) return 'bg-yellow-100 text-yellow-700 border-yellow-200';
-        return 'bg-green-100 text-green-700 border-green-200';
-    }
-
-    function getDaysLeft(deadline) {
-        const today = new Date();
-        const deadlineDate = new Date(deadline);
-        const daysLeft = Math.ceil((deadlineDate - today) / (1000 * 60 * 60 * 24));
-        if (daysLeft < 0) return 'Deadline passed';
-        if (daysLeft === 0) return 'Due today';
-        if (daysLeft === 1) return '1 day left';
-        return daysLeft + ' days left';
-    }
-
-    function getCategoryColor(category) {
-        const colors = {
-            'Internship': 'bg-blue-100 text-blue-700',
-            'Scholarship': 'bg-purple-100 text-purple-700',
-            'Hackathon': 'bg-orange-100 text-orange-700',
-            'Workshop': 'bg-teal-100 text-teal-700',
-            'Competition': 'bg-pink-100 text-pink-700',
-            'Research': 'bg-indigo-100 text-indigo-700',
-            'Exchange Program': 'bg-cyan-100 text-cyan-700',
-            'Fellowship': 'bg-rose-100 text-rose-700',
-        };
-        return colors[category] || 'bg-gray-100 text-gray-700';
-    }
-
     async function handleApplySubmit(e) {
         e.preventDefault();
         if (!applyForm.name || !applyForm.email || !applyForm.statement) return;
         setSubmitting(true);
         setApplyStatus(null);
-        // Simulate submission (replace with real API call if you have one)
         try {
             await new Promise(res => setTimeout(res, 1000));
             setApplyStatus('success');
@@ -93,41 +76,49 @@ export default function DetailPage() {
         if (!token) { navigate('/login'); return; }
         try {
             if (saved) {
-                await api.delete(`/api/bookmarks/${id}`, {
-                    headers: { Authorization: `Bearer ${token}` }
-                });
+                await api.delete(`/api/bookmarks/${id}`, { headers: { Authorization: `Bearer ${token}` } });
                 markUnsaved(id);
             } else {
-                await api.post('/api/bookmarks', { opp_id: id }, {
-                    headers: { Authorization: `Bearer ${token}` }
-                });
+                await api.post('/api/bookmarks', { opp_id: id }, { headers: { Authorization: `Bearer ${token}` } });
                 markSaved(id);
             }
         } catch (err) {
             if (err.response?.status === 409) markSaved(id);
         }
     }
+
     if (loading) {
         return (
-            <div className="flex justify-center items-center py-32">
-                <div className="animate-spin rounded-full h-10 w-10 border-4 border-indigo-500 border-t-transparent"></div>
+            <div style={{ background: '#0d0b23', minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <div style={{
+                    width: 40, height: 40, borderRadius: '50%',
+                    border: '3px solid rgba(167,139,250,0.2)',
+                    borderTopColor: '#a78bfa',
+                    animation: 'spin 0.8s linear infinite',
+                }} />
             </div>
         );
     }
 
     if (error) {
         return (
-            <div className="max-w-3xl mx-auto px-4 py-12">
-                <div className="bg-red-50 border border-red-200 text-red-600 rounded-xl p-6 text-center">
-                    <p className="text-lg font-semibold">{error}</p>
-                    <button onClick={() => navigate('/opportunities')} className="mt-4 text-sm text-indigo-600 hover:underline">
-                        Back to listings
+            <div style={{ background: '#0d0b23', minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 24 }}>
+                <div style={{
+                    background: 'rgba(239,68,68,0.10)', border: '1px solid rgba(239,68,68,0.30)',
+                    color: '#fca5a5', borderRadius: 14, padding: '24px 32px', textAlign: 'center',
+                }}>
+                    <p style={{ fontSize: '1.05rem', fontWeight: 600, marginBottom: 12 }}>{error}</p>
+                    <button onClick={() => navigate('/opportunities')}
+                        style={{ background: 'none', border: 'none', color: '#a78bfa', cursor: 'pointer', fontSize: '0.875rem', fontWeight: 600 }}>
+                        ← Back to listings
                     </button>
                 </div>
             </div>
         );
     }
 
+    const catStyle = CATEGORY_STYLES[opportunity.category] || DEFAULT_STYLE;
+    const dl = getDeadlineInfo(opportunity.deadline);
     const deadlineFormatted = new Date(opportunity.deadline).toLocaleDateString('en-US', {
         weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
     });
@@ -135,244 +126,354 @@ export default function DetailPage() {
         year: 'numeric', month: 'long', day: 'numeric'
     });
 
+    const inputStyle = {
+        width: '100%',
+        background: 'rgba(255,255,255,0.05)',
+        border: '1px solid rgba(167,139,250,0.20)',
+        borderRadius: 10,
+        padding: '10px 14px',
+        fontSize: '0.875rem',
+        color: '#e2e0ff',
+        outline: 'none',
+        fontFamily: "'DM Sans', sans-serif",
+    };
+    const labelStyle = { display: 'block', fontSize: '0.78rem', color: 'rgba(167,139,250,0.7)', fontWeight: 600, marginBottom: 6, letterSpacing: '0.04em' };
+
     return (
-        <div className="max-w-3xl mx-auto px-4 py-10">
-            <button
-                onClick={() => navigate('/opportunities')}
-                className="flex items-center gap-2 text-sm text-indigo-600 hover:text-indigo-800 mb-6 transition">
-                ← Back to opportunities
-            </button>
+        <div style={{ background: '#0d0b23', minHeight: '100vh', padding: '32px 16px 60px' }}>
+            <style>{`@keyframes spin { to { transform: rotate(360deg); } } @keyframes detailFadeUp { from { opacity:0; transform:translateY(18px); } to { opacity:1; transform:translateY(0); } } .detail-fade { animation: detailFadeUp 0.45s cubic-bezier(0.22,1,0.36,1) both; }`}</style>
 
-            <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
+            <div style={{ maxWidth: 760, margin: '0 auto' }}>
 
-                <div className="flex flex-wrap items-center gap-2 mb-4">
-                    <span className={"text-xs font-semibold px-3 py-1 rounded-full " + getCategoryColor(opportunity.category)}>
-                        {opportunity.category}
-                    </span>
-                    <span className={"text-xs font-semibold px-3 py-1 rounded-full border " + getDeadlineColor(opportunity.deadline)}>
-                        {getDaysLeft(opportunity.deadline)}
-                    </span>
-                    <span className={"text-xs font-semibold px-3 py-1 rounded-full " + (opportunity.is_paid ? 'bg-emerald-100 text-emerald-700' : 'bg-gray-100 text-gray-500')}>
-                        {opportunity.is_paid ? 'Paid' : 'Unpaid'}
-                    </span>
-                </div>
+                {/* Back button */}
+                <button
+                    onClick={() => navigate('/opportunities')}
+                    style={{
+                        display: 'inline-flex', alignItems: 'center', gap: 6,
+                        background: 'rgba(167,139,250,0.10)',
+                        border: '1px solid rgba(167,139,250,0.20)',
+                        color: '#a78bfa', borderRadius: 8,
+                        padding: '7px 16px', fontSize: '0.82rem', fontWeight: 600,
+                        cursor: 'pointer', marginBottom: 24,
+                        fontFamily: "'DM Sans', sans-serif",
+                        transition: 'all 0.18s',
+                    }}
+                    onMouseEnter={e => e.currentTarget.style.background = 'rgba(167,139,250,0.18)'}
+                    onMouseLeave={e => e.currentTarget.style.background = 'rgba(167,139,250,0.10)'}
+                >
+                    ← Back to opportunities
+                </button>
 
-                <h1 className="text-2xl font-bold text-gray-800 mb-2">{opportunity.title}</h1>
-
-                <div className="flex flex-wrap gap-4 text-sm text-gray-500 mb-6">
-                    <span>{opportunity.department}</span>
-                    <span>{opportunity.mode}</span>
-                    <span>{opportunity.views_count} views</span>
-                    <span>{opportunity.save_count} saves</span>
-                    <span>Posted by {opportunity.posted_by}</span>
-                </div>
-
-                <hr className="border-gray-100 mb-6" />
-
-                {/* ── Quick details grid ── */}
-                {(opportunity.organization || opportunity.location || opportunity.duration || opportunity.stipend) && (
+                {/* Main card */}
+                <div className="detail-fade" style={{
+                    background: 'linear-gradient(145deg, #17153a 0%, #120f2e 100%)',
+                    border: '1px solid rgba(167,139,250,0.15)',
+                    borderRadius: 24,
+                    overflow: 'hidden',
+                    boxShadow: '0 24px 64px rgba(0,0,0,0.45)',
+                }}>
+                    {/* Header band */}
                     <div style={{
-                        display: 'grid',
-                        gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))',
-                        gap: 16,
-                        background: '#f9fafb',
-                        border: '1px solid #e5e7eb',
-                        borderRadius: 12,
-                        padding: '18px 20px',
-                        marginBottom: 24,
+                        background: 'linear-gradient(135deg, rgba(124,58,237,0.18) 0%, rgba(99,102,241,0.10) 100%)',
+                        borderBottom: '1px solid rgba(167,139,250,0.12)',
+                        padding: '28px 32px',
                     }}>
-                        {opportunity.organization && (
-                            <div>
-                                <p style={{ fontSize: '0.68rem', color: '#9ca3af', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: 4 }}>Organization</p>
-                                <p style={{ fontSize: '0.9rem', color: '#1a1f36', fontWeight: 700 }}>{opportunity.organization}</p>
-                            </div>
-                        )}
-                        {opportunity.location && (
-                            <div>
-                                <p style={{ fontSize: '0.68rem', color: '#9ca3af', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: 4 }}>Location</p>
-                                <p style={{ fontSize: '0.9rem', color: '#1a1f36', fontWeight: 600 }}>📍 {opportunity.location}</p>
-                            </div>
-                        )}
-                        {opportunity.duration && (
-                            <div>
-                                <p style={{ fontSize: '0.68rem', color: '#9ca3af', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: 4 }}>Duration</p>
-                                <p style={{ fontSize: '0.9rem', color: '#1a1f36', fontWeight: 600 }}>⏱ {opportunity.duration}</p>
-                            </div>
-                        )}
-                        {opportunity.stipend && (
-                            <div>
-                                <p style={{ fontSize: '0.68rem', color: '#9ca3af', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: 4 }}>Compensation</p>
-                                <p style={{ fontSize: '0.9rem', color: '#059669', fontWeight: 700 }}>💰 {opportunity.stipend}</p>
-                            </div>
-                        )}
-                    </div>
-                )}
+                        {/* Badges row */}
+                        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 16 }}>
+                            <span style={{
+                                display: 'inline-flex', alignItems: 'center', gap: 6,
+                                background: catStyle.bg, border: `1px solid ${catStyle.border}`,
+                                borderRadius: 100, padding: '4px 14px',
+                                fontSize: '0.75rem', fontWeight: 700, color: catStyle.text,
+                            }}>
+                                {opportunity.category}
+                            </span>
+                            <span style={{
+                                display: 'inline-flex', alignItems: 'center', gap: 5,
+                                background: dl.bg, border: `1px solid ${dl.border}`,
+                                borderRadius: 100, padding: '4px 12px',
+                                fontSize: '0.75rem', fontWeight: 700, color: dl.color,
+                            }}>
+                                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5}>
+                                    <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+                                </svg>
+                                {dl.label}
+                            </span>
+                            <span style={{
+                                background: opportunity.is_paid ? 'rgba(16,185,129,0.15)' : 'rgba(107,114,128,0.12)',
+                                border: `1px solid ${opportunity.is_paid ? 'rgba(16,185,129,0.35)' : 'rgba(107,114,128,0.25)'}`,
+                                borderRadius: 100, padding: '4px 12px',
+                                fontSize: '0.75rem', fontWeight: 700,
+                                color: opportunity.is_paid ? '#6ee7b7' : '#9ca3af',
+                            }}>
+                                {opportunity.is_paid ? 'Paid' : 'Unpaid'}
+                            </span>
+                        </div>
 
-                {/* ── About ── */}
-                <div className="mb-6">
-                    <h2 className="text-base font-semibold text-gray-700 mb-2">About this opportunity</h2>
-                    <p className="text-gray-600 leading-relaxed">{opportunity.description}</p>
-                </div>
+                        <h1 style={{
+                            fontFamily: "'Playfair Display', serif",
+                            fontSize: 'clamp(1.4rem, 3vw, 2rem)',
+                            fontWeight: 800, color: '#f1f0ff',
+                            lineHeight: 1.25, marginBottom: 10,
+                        }}>
+                            {opportunity.title}
+                        </h1>
 
-                {/* ── Eligibility ── */}
-                {opportunity.eligibility && (
-                    <div style={{
-                        background: '#fffbeb',
-                        border: '1px solid #fde68a',
-                        borderRadius: 10,
-                        padding: '14px 16px',
-                        marginBottom: 20,
-                    }}>
-                        <p style={{ fontSize: '0.72rem', color: '#92400e', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: 6 }}>Eligibility</p>
-                        <p style={{ fontSize: '0.875rem', color: '#78350f', lineHeight: 1.65, margin: 0 }}>{opportunity.eligibility}</p>
-                    </div>
-                )}
-
-                {/* ── Required Skills ── */}
-                {opportunity.required_skills?.length > 0 && (
-                    <div style={{ marginBottom: 20 }}>
-                        <p style={{ fontSize: '0.72rem', color: '#9ca3af', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: 10 }}>Required Skills</p>
-                        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
-                            {opportunity.required_skills.map(skill => (
-                                <span key={skill} style={{
-                                    background: '#eef2ff', color: '#4338ca',
-                                    border: '1px solid #c7d2fe',
-                                    borderRadius: 6, padding: '5px 12px',
-                                    fontSize: '0.8rem', fontWeight: 600,
-                                }}>
-                                    {skill}
+                        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 18, fontSize: '0.8rem', color: 'rgba(167,139,250,0.65)' }}>
+                            {[
+                                { icon: '🏛', v: opportunity.department },
+                                { icon: '📍', v: opportunity.mode },
+                                { icon: '👁', v: `${opportunity.views_count} views` },
+                                { icon: '🔖', v: `${opportunity.save_count} saves` },
+                            ].map(m => m.v && (
+                                <span key={m.v} style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
+                                    <span>{m.icon}</span>{m.v}
                                 </span>
                             ))}
                         </div>
                     </div>
-                )}
 
-                {/* ── Tags ── */}
-                {opportunity.tags?.length > 0 && (
-                    <div style={{ marginBottom: 24 }}>
-                        <p style={{ fontSize: '0.72rem', color: '#9ca3af', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: 10 }}>Tags</p>
-                        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
-                            {opportunity.tags.map(tag => (
-                                <span key={tag} style={{
-                                    background: '#f3f4f6', color: '#6b7280',
-                                    borderRadius: 6, padding: '4px 10px',
-                                    fontSize: '0.78rem', fontWeight: 500,
-                                }}>
-                                    #{tag}
-                                </span>
-                            ))}
+                    <div style={{ padding: '28px 32px', display: 'flex', flexDirection: 'column', gap: 24 }}>
+
+                        {/* Quick-details grid */}
+                        {(opportunity.organization || opportunity.location || opportunity.duration || opportunity.stipend) && (
+                            <div style={{
+                                display: 'grid',
+                                gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))',
+                                gap: 16,
+                                background: 'rgba(255,255,255,0.03)',
+                                border: '1px solid rgba(167,139,250,0.12)',
+                                borderRadius: 14, padding: '18px 20px',
+                            }}>
+                                {[
+                                    { label: 'Organization', value: opportunity.organization, icon: '🏢' },
+                                    { label: 'Location',     value: opportunity.location,     icon: '📍' },
+                                    { label: 'Duration',     value: opportunity.duration,     icon: '⏱' },
+                                    { label: 'Compensation', value: opportunity.stipend,      icon: '💰', highlight: true },
+                                ].filter(r => r.value).map(row => (
+                                    <div key={row.label}>
+                                        <p style={{ fontSize: '0.65rem', color: 'rgba(167,139,250,0.5)', fontWeight: 700, letterSpacing: '0.09em', textTransform: 'uppercase', marginBottom: 5 }}>{row.label}</p>
+                                        <p style={{ fontSize: '0.88rem', color: row.highlight ? '#6ee7b7' : '#e2e0ff', fontWeight: row.highlight ? 700 : 600 }}>
+                                            {row.icon} {row.value}
+                                        </p>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+
+                        {/* About */}
+                        <div>
+                            <p style={{ fontSize: '0.68rem', color: 'rgba(167,139,250,0.5)', fontWeight: 700, letterSpacing: '0.09em', textTransform: 'uppercase', marginBottom: 10 }}>About this opportunity</p>
+                            <p style={{ color: 'rgba(255,255,255,0.65)', lineHeight: 1.75, fontSize: '0.92rem' }}>{opportunity.description}</p>
                         </div>
+
+                        {/* Eligibility */}
+                        {opportunity.eligibility && (
+                            <div style={{
+                                background: 'rgba(245,158,11,0.06)',
+                                border: '1px solid rgba(245,158,11,0.20)',
+                                borderRadius: 12, padding: '14px 18px',
+                            }}>
+                                <p style={{ fontSize: '0.65rem', color: 'rgba(251,191,36,0.6)', fontWeight: 700, letterSpacing: '0.09em', textTransform: 'uppercase', marginBottom: 7 }}>Eligibility</p>
+                                <p style={{ fontSize: '0.875rem', color: 'rgba(251,191,36,0.85)', lineHeight: 1.65 }}>{opportunity.eligibility}</p>
+                            </div>
+                        )}
+
+                        {/* Required Skills */}
+                        {opportunity.required_skills?.length > 0 && (
+                            <div>
+                                <p style={{ fontSize: '0.65rem', color: 'rgba(167,139,250,0.5)', fontWeight: 700, letterSpacing: '0.09em', textTransform: 'uppercase', marginBottom: 10 }}>Required Skills</p>
+                                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
+                                    {opportunity.required_skills.map(skill => (
+                                        <span key={skill} style={{
+                                            background: 'rgba(99,102,241,0.15)',
+                                            border: '1px solid rgba(99,102,241,0.30)',
+                                            color: '#a5b4fc', borderRadius: 7,
+                                            padding: '5px 13px', fontSize: '0.8rem', fontWeight: 600,
+                                        }}>{skill}</span>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
+
+                        {/* Tags */}
+                        {opportunity.tags?.length > 0 && (
+                            <div>
+                                <p style={{ fontSize: '0.65rem', color: 'rgba(167,139,250,0.5)', fontWeight: 700, letterSpacing: '0.09em', textTransform: 'uppercase', marginBottom: 10 }}>Tags</p>
+                                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
+                                    {opportunity.tags.map(tag => (
+                                        <span key={tag} style={{
+                                            background: 'rgba(255,255,255,0.05)',
+                                            border: '1px solid rgba(255,255,255,0.10)',
+                                            color: 'rgba(255,255,255,0.45)',
+                                            borderRadius: 6, padding: '4px 10px',
+                                            fontSize: '0.78rem', fontWeight: 500,
+                                        }}>#{tag}</span>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
+
+                        {/* Deadline banner */}
+                        <div style={{
+                            background: dl.bg, border: `1px solid ${dl.border}`,
+                            borderRadius: 12, padding: '16px 20px',
+                        }}>
+                            <p style={{ fontSize: '0.72rem', color: dl.color, fontWeight: 700, letterSpacing: '0.07em', textTransform: 'uppercase', marginBottom: 6 }}>Application Deadline</p>
+                            <p style={{ fontSize: '1.1rem', fontWeight: 800, color: dl.color, marginBottom: 3 }}>{deadlineFormatted}</p>
+                            <p style={{ fontSize: '0.82rem', color: dl.color, opacity: 0.75 }}>{dl.label}</p>
+                        </div>
+
+                        {/* Action buttons */}
+                        <div style={{ display: 'flex', gap: 12 }}>
+                            {opportunity.application_link ? (
+                                <a
+                                    href={opportunity.application_link}
+                                    target="_blank" rel="noopener noreferrer"
+                                    style={{
+                                        flex: 1, textAlign: 'center',
+                                        background: 'linear-gradient(135deg, #7c3aed, #6d28d9)',
+                                        color: '#fff', padding: '13px',
+                                        borderRadius: 12, fontWeight: 700,
+                                        fontSize: '0.95rem', textDecoration: 'none',
+                                        display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
+                                        boxShadow: '0 4px 20px rgba(124,58,237,0.45)',
+                                        transition: 'all 0.2s',
+                                        fontFamily: "'DM Sans', sans-serif",
+                                    }}
+                                    onMouseEnter={e => e.currentTarget.style.boxShadow = '0 6px 28px rgba(124,58,237,0.65)'}
+                                    onMouseLeave={e => e.currentTarget.style.boxShadow = '0 4px 20px rgba(124,58,237,0.45)'}
+                                >
+                                    Apply Now ↗
+                                </a>
+                            ) : (
+                                <button
+                                    onClick={() => setShowApply(true)}
+                                    style={{
+                                        flex: 1,
+                                        background: 'linear-gradient(135deg, #7c3aed, #6d28d9)',
+                                        color: '#fff', padding: '13px',
+                                        borderRadius: 12, fontWeight: 700,
+                                        fontSize: '0.95rem', border: 'none', cursor: 'pointer',
+                                        boxShadow: '0 4px 20px rgba(124,58,237,0.45)',
+                                        fontFamily: "'DM Sans', sans-serif",
+                                    }}
+                                >
+                                    Apply Now
+                                </button>
+                            )}
+                            <button
+                                onClick={handleSave}
+                                title={saved ? 'Remove bookmark' : 'Save opportunity'}
+                                style={{
+                                    width: 48, height: 48, flexShrink: 0,
+                                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                                    borderRadius: 12,
+                                    background: saved ? 'rgba(109,40,217,0.30)' : 'rgba(255,255,255,0.07)',
+                                    border: `1px solid ${saved ? 'rgba(167,139,250,0.45)' : 'rgba(255,255,255,0.15)'}`,
+                                    color: saved ? '#c4b5fd' : 'rgba(255,255,255,0.4)',
+                                    cursor: 'pointer', transition: 'all 0.18s',
+                                }}
+                            >
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+                                    fill={saved ? 'currentColor' : 'none'} viewBox="0 0 24 24"
+                                    stroke="currentColor" strokeWidth={2}>
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
+                                </svg>
+                            </button>
+                        </div>
+
+                        <p style={{ textAlign: 'center', fontSize: '0.75rem', color: 'rgba(167,139,250,0.35)' }}>
+                            Posted on {createdFormatted}
+                        </p>
                     </div>
-                )}
-
-                <div className={"rounded-xl border p-4 mb-6 " + getDeadlineColor(opportunity.deadline)}>
-                    <p className="text-sm font-semibold">Application Deadline</p>
-                    <p className="text-lg font-bold mt-1">{deadlineFormatted}</p>
-                    <p className="text-sm mt-1">{getDaysLeft(opportunity.deadline)}</p>
                 </div>
-
-                {/* Action buttons */}
-                <div className="flex gap-3">
-                    {opportunity.application_link ? (
-                        <a
-                            href={opportunity.application_link}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="flex-1 text-center bg-indigo-600 text-white py-3 rounded-xl font-semibold text-base hover:bg-indigo-700 transition"
-                            style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6, textDecoration: 'none' }}>
-                            Apply Now ↗
-                        </a>
-                    ) : (
-                        <button
-                            onClick={() => setShowApply(true)}
-                            className="flex-1 text-center bg-indigo-600 text-white py-3 rounded-xl font-semibold text-base hover:bg-indigo-700 transition">
-                            Apply Now
-                        </button>
-                    )}
-                    <button
-                        onClick={handleSave}
-                        title={saved ? 'Remove bookmark' : 'Save opportunity'}
-                        className={`w-12 h-12 flex items-center justify-center rounded-xl border-2 transition
-                            ${saved
-                                ? 'border-indigo-300 bg-indigo-50 text-indigo-600 hover:bg-red-50 hover:border-red-200 hover:text-red-400'
-                                : 'border-gray-200 bg-white text-gray-400 hover:border-indigo-300 hover:text-indigo-500'
-                            }`}>
-                        <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill={saved ? 'currentColor' : 'none'} viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
-                        </svg>
-                    </button>
-                </div>
-
-                <p className="text-xs text-gray-400 text-center mt-4">Posted on {createdFormatted}</p>
             </div>
 
-            {/* Apply Now Modal */}
+            {/* Apply modal */}
             {showApply && (
-                <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50 px-4">
-                    <div className="bg-white rounded-2xl shadow-xl w-full max-w-md p-6">
-                        <div className="flex items-center justify-between mb-4">
-                            <h2 className="text-lg font-bold text-gray-800">Apply for {opportunity.title}</h2>
+                <div style={{
+                    position: 'fixed', inset: 0,
+                    background: 'rgba(0,0,0,0.65)', backdropFilter: 'blur(6px)',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    zIndex: 50, padding: 16,
+                }}>
+                    <div style={{
+                        background: 'linear-gradient(145deg, #1e1b4b, #17153a)',
+                        border: '1px solid rgba(167,139,250,0.20)',
+                        borderRadius: 20,
+                        boxShadow: '0 24px 60px rgba(0,0,0,0.6)',
+                        width: '100%', maxWidth: 440, padding: 28,
+                        animation: 'detailFadeUp 0.3s ease both',
+                    }}>
+                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 20 }}>
+                            <h2 style={{ fontSize: '1.05rem', fontWeight: 700, color: '#f1f0ff' }}>
+                                Apply for {opportunity.title}
+                            </h2>
                             <button
                                 onClick={() => { setShowApply(false); setApplyStatus(null); }}
-                                className="text-gray-400 hover:text-gray-600 text-xl font-bold">
-                                ✕
+                                style={{ background: 'none', border: 'none', color: 'rgba(255,255,255,0.4)', cursor: 'pointer', fontSize: '1.3rem', lineHeight: 1 }}>
+                                ×
                             </button>
                         </div>
 
                         {applyStatus === 'success' ? (
-                            <div className="text-center py-8">
-                                <p className="text-4xl mb-3">🎉</p>
-                                <p className="text-lg font-semibold text-gray-800">Application Submitted!</p>
-                                <p className="text-sm text-gray-500 mt-1">Good luck with your application.</p>
+                            <div style={{ textAlign: 'center', padding: '24px 0' }}>
+                                <div style={{ fontSize: '3rem', marginBottom: 12 }}>🎉</div>
+                                <p style={{ fontSize: '1.05rem', fontWeight: 700, color: '#f1f0ff', marginBottom: 6 }}>Application Submitted!</p>
+                                <p style={{ fontSize: '0.85rem', color: 'rgba(255,255,255,0.45)', marginBottom: 20 }}>Good luck with your application.</p>
                                 <button
                                     onClick={() => { setShowApply(false); setApplyStatus(null); }}
-                                    className="mt-5 bg-indigo-600 text-white px-6 py-2 rounded-xl text-sm font-semibold hover:bg-indigo-700 transition">
+                                    style={{
+                                        background: 'linear-gradient(135deg, #7c3aed, #6d28d9)',
+                                        color: '#fff', padding: '10px 28px',
+                                        borderRadius: 10, border: 'none', cursor: 'pointer',
+                                        fontWeight: 700, fontSize: '0.875rem',
+                                        fontFamily: "'DM Sans', sans-serif",
+                                    }}>
                                     Close
                                 </button>
                             </div>
                         ) : (
-                            <form onSubmit={handleApplySubmit} className="flex flex-col gap-4">
+                            <form onSubmit={handleApplySubmit} style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+                                {[
+                                    { label: 'Full Name', key: 'name', type: 'text', placeholder: 'Your full name' },
+                                    { label: 'Email',     key: 'email', type: 'email', placeholder: 'your@email.com' },
+                                ].map(f => (
+                                    <div key={f.key}>
+                                        <label style={labelStyle}>{f.label}</label>
+                                        <input
+                                            type={f.type} required
+                                            value={applyForm[f.key]}
+                                            onChange={e => setApplyForm({ ...applyForm, [f.key]: e.target.value })}
+                                            placeholder={f.placeholder}
+                                            style={inputStyle}
+                                        />
+                                    </div>
+                                ))}
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
-                                    <input
-                                        type="text"
-                                        required
-                                        value={applyForm.name}
-                                        onChange={e => setApplyForm({ ...applyForm, name: e.target.value })}
-                                        placeholder="Your full name"
-                                        className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-300"
-                                    />
-                                </div>
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
-                                    <input
-                                        type="email"
-                                        required
-                                        value={applyForm.email}
-                                        onChange={e => setApplyForm({ ...applyForm, email: e.target.value })}
-                                        placeholder="your@email.com"
-                                        className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-300"
-                                    />
-                                </div>
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-1">Why are you interested?</label>
+                                    <label style={labelStyle}>Why are you interested?</label>
                                     <textarea
-                                        required
-                                        rows={4}
+                                        required rows={4}
                                         value={applyForm.statement}
                                         onChange={e => setApplyForm({ ...applyForm, statement: e.target.value })}
                                         placeholder="Briefly explain your interest and relevant experience..."
-                                        className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-300 resize-none"
+                                        style={{ ...inputStyle, resize: 'none' }}
                                     />
                                 </div>
                                 {applyStatus === 'error' && (
-                                    <p className="text-sm text-red-500">Something went wrong. Please try again.</p>
+                                    <p style={{ fontSize: '0.82rem', color: '#f87171' }}>Something went wrong. Please try again.</p>
                                 )}
                                 <button
-                                    type="submit"
-                                    disabled={submitting}
-                                    className="bg-indigo-600 text-white py-2.5 rounded-xl font-semibold text-sm hover:bg-indigo-700 transition disabled:opacity-60">
-                                    {submitting ? 'Submitting...' : 'Submit Application'}
+                                    type="submit" disabled={submitting}
+                                    style={{
+                                        background: 'linear-gradient(135deg, #7c3aed, #6d28d9)',
+                                        color: '#fff', padding: '12px',
+                                        borderRadius: 10, border: 'none', cursor: submitting ? 'not-allowed' : 'pointer',
+                                        fontWeight: 700, fontSize: '0.9rem', opacity: submitting ? 0.6 : 1,
+                                        fontFamily: "'DM Sans', sans-serif",
+                                    }}>
+                                    {submitting ? 'Submitting…' : 'Submit Application'}
                                 </button>
                             </form>
                         )}

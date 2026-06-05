@@ -48,7 +48,6 @@ function SkeletonCard() {
     );
 }
 
-// Shimmer shimmer shimmer override for dark background
 const darkShimmerStyle = `
 @keyframes shimmerDark {
     0%   { background-position: -600px 0; }
@@ -58,6 +57,45 @@ const darkShimmerStyle = `
     background: linear-gradient(90deg, rgba(255,255,255,0.05) 25%, rgba(255,255,255,0.10) 50%, rgba(255,255,255,0.05) 75%);
     background-size: 1200px 100%;
     animation: shimmerDark 1.6s infinite;
+}
+@keyframes cardEnter {
+    from { opacity: 0; transform: translateY(20px) scale(0.97); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+.card-enter {
+    animation: cardEnter 0.45s cubic-bezier(0.22,1,0.36,1) both;
+}
+@keyframes listBounce {
+    0%, 100% { transform: translateY(0px)   scale(1);    opacity: 0.55; }
+    40%       { transform: translateY(-55px) scale(1.09); opacity: 0.90; }
+    70%       { transform: translateY(-25px) scale(0.97); opacity: 0.75; }
+}
+@keyframes listDriftA {
+    0%   { transform: translate(0,0)      scale(1);    opacity: 0.55; }
+    30%  { transform: translate(50px,-60px) scale(1.10); opacity: 0.90; }
+    65%  { transform: translate(-30px,35px) scale(0.93); opacity: 0.70; }
+    100% { transform: translate(0,0)      scale(1);    opacity: 0.55; }
+}
+.hero-glow-1 {
+    position: absolute; top: -80px; right: 5%;
+    width: 450px; height: 450px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(124,58,237,0.24) 0%, rgba(99,102,241,0.10) 40%, transparent 68%);
+    animation: listDriftA 10s ease-in-out infinite;
+    pointer-events: none; filter: blur(2px);
+}
+.hero-glow-2 {
+    position: absolute; bottom: -70px; left: 8%;
+    width: 350px; height: 350px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(167,139,250,0.20) 0%, transparent 65%);
+    animation: listDriftA 15s ease-in-out infinite 3s;
+    pointer-events: none; filter: blur(1px);
+}
+.hero-glow-3 {
+    position: absolute; top: 28%; left: 38%;
+    width: 200px; height: 200px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(99,102,241,0.18) 0%, transparent 65%);
+    animation: listBounce 7s ease-in-out infinite 1.5s;
+    pointer-events: none;
 }
 `;
 
@@ -150,11 +188,17 @@ export default function ListingsPage() {
                 position: 'relative',
                 overflow: 'hidden',
             }}>
-                {/* Background shapes */}
-                <div className="hero-shape hero-shape-1" />
-                <div className="hero-shape hero-shape-2" />
-                <div className="hero-shape hero-shape-3" />
-                <div className="hero-shape hero-shape-4" />
+                {/* Large drifting background orbs */}
+                <div className="hero-glow-1" />
+                <div className="hero-glow-2" />
+                <div className="hero-glow-3" />
+                {/* Small bouncing particles */}
+                <div className="lp-ball lp-ball-1" />
+                <div className="lp-ball lp-ball-2" />
+                <div className="lp-ball lp-ball-3" />
+                <div className="lp-ball lp-ball-4" />
+                <div className="lp-ball lp-ball-5" />
+                <div className="lp-ball lp-ball-6" />
                 <div className="hero-grid" />
 
                 <div className="max-w-7xl mx-auto relative">
@@ -186,12 +230,15 @@ export default function ListingsPage() {
                                 <>
                                     {categoryIcon && <span style={{ marginRight: 10 }}>{categoryIcon}</span>}
                                     {activeCategory}{' '}
-                                    <span style={{ color: '#fbbf24' }}>Opportunities</span>
+                                    <span style={{
+                                        background: 'linear-gradient(135deg, #a78bfa, #c4b5fd)',
+                                        WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent',
+                                    }}>Opportunities</span>
                                 </>
                             ) : (
                                 <>Find Your Edge —{' '}
                                     <span style={{
-                                        background: 'linear-gradient(90deg, #fbbf24, #f472b6)',
+                                        background: 'linear-gradient(135deg, #a78bfa 0%, #c4b5fd 50%, #e0d7ff 100%)',
                                         WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent',
                                     }}>
                                         Browse Every Opportunity
@@ -362,9 +409,11 @@ export default function ListingsPage() {
                                 }} />
                             </div>
 
-                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 fade-up fade-up-delay-3">
-                                {filtered.map(opp => (
-                                    <OpportunityCard key={opp.opp_id} opportunity={opp} />
+                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+                                {filtered.map((opp, idx) => (
+                                    <div key={opp.opp_id} className="card-enter" style={{ animationDelay: `${Math.min(idx * 0.06, 0.6)}s` }}>
+                                        <OpportunityCard opportunity={opp} />
+                                    </div>
                                 ))}
                             </div>
                         </>

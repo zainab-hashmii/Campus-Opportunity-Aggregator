@@ -90,8 +90,8 @@ const CATEGORIES = [
 ];
 
 const STATS = [
-    { value: 100, suffix: '+', label: 'Active Opportunities' },
-    { value: 6,   suffix: '',  label: 'Departments' },
+    { value: 246, suffix: '+', label: 'Active Opportunities' },
+    { value: 10,  suffix: '',  label: 'Departments' },
     { value: 8,   suffix: '',  label: 'Opportunity Types' },
     { value: 500, suffix: '+', label: 'Students Enrolled' },
 ];
@@ -175,7 +175,16 @@ export default function LandingPage() {
                 {/* ── Floating ambient shapes ── */}
                 <div className="hero-shape hero-shape-1" style={{ zIndex: 2 }} />
                 <div className="hero-shape hero-shape-2" style={{ zIndex: 2 }} />
-                <div className="hero-shape hero-shape-3" style={{ zIndex: 2 }} />
+                <div className="hero-orb-1" style={{ zIndex: 2 }} />
+                <div className="hero-orb-2" style={{ zIndex: 2 }} />
+                <div className="hero-orb-3" style={{ zIndex: 2 }} />
+                {/* Glowing floating balls */}
+                <div className="lp-ball lp-ball-1" style={{ zIndex: 3 }} />
+                <div className="lp-ball lp-ball-2" style={{ zIndex: 3 }} />
+                <div className="lp-ball lp-ball-3" style={{ zIndex: 3 }} />
+                <div className="lp-ball lp-ball-4" style={{ zIndex: 3 }} />
+                <div className="lp-ball lp-ball-5" style={{ zIndex: 3 }} />
+                <div className="lp-ball lp-ball-6" style={{ zIndex: 3 }} />
 
                 {/* ── HERO CONTENT ── */}
                 <div className="max-w-7xl mx-auto px-6 w-full" style={{
@@ -246,7 +255,7 @@ export default function LandingPage() {
                             fontSize: '1.02rem', lineHeight: 1.78,
                             maxWidth: 520, marginBottom: 10,
                         }}>
-                            100+ verified internships, scholarships, hackathons & research positions —
+                            246+ verified internships, scholarships, hackathons & research positions —
                             updated regularly and curated exclusively for NUST's most driven students.
                         </p>
 
@@ -285,7 +294,7 @@ export default function LandingPage() {
 
                         {/* Trust badges */}
                         <div className="fade-up fade-up-delay-4" style={{ display: 'flex', gap: 22, flexWrap: 'wrap' }}>
-                            {['100+ Opportunities', 'Free to Join', 'NUST Exclusive'].map(badge => (
+                            {['246+ Opportunities', 'Free to Join', 'NUST Exclusive'].map(badge => (
                                 <div key={badge} style={{
                                     display: 'flex', alignItems: 'center', gap: 7,
                                     color: 'rgba(255,255,255,0.45)', fontSize: '0.8rem',
@@ -452,9 +461,16 @@ export default function LandingPage() {
                 background: 'linear-gradient(135deg, #0f0e2b 0%, #1e1b4b 50%, #312e81 100%)',
                 padding: '90px 24px', position: 'relative', overflow: 'hidden',
             }}>
-                <div style={{ position: 'absolute', top: -100, right: -100, width: 380, height: 380, borderRadius: '50%', background: 'rgba(167,139,250,0.07)', pointerEvents: 'none' }} />
-                <div style={{ position: 'absolute', bottom: -80, left: '18%', width: 260, height: 260, borderRadius: '50%', background: 'rgba(245,158,11,0.06)', pointerEvents: 'none' }} />
-                <div style={{ position: 'absolute', top: '40%', right: '25%', width: 120, height: 120, borderRadius: '50%', background: 'rgba(124,58,237,0.08)', pointerEvents: 'none' }} />
+                <div className="cta-orb-1" />
+                <div className="cta-orb-2" />
+                <div className="cta-orb-3" />
+                <div className="cta-orb-4" />
+                <div className="cta-orb-5" />
+                <div className="cta-orb-6" />
+                <div className="cta-ball cta-ball-1" />
+                <div className="cta-ball cta-ball-2" />
+                <div className="cta-ball cta-ball-3" />
+                <div className="cta-ball cta-ball-4" />
                 <div className="max-w-3xl mx-auto text-center" style={{
                     position: 'relative', zIndex: 1,
                     opacity: ctaVisible ? 1 : 0,

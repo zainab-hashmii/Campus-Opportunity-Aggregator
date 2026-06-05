@@ -15,6 +15,10 @@ const DEPARTMENTS = [
     { value: '4', label: 'Media Studies' },
     { value: '5', label: 'Mathematics' },
     { value: '6', label: 'Psychology' },
+    { value: '7', label: 'Biotechnology' },
+    { value: '8', label: 'Chemistry' },
+    { value: '9', label: 'Mechanical Engineering' },
+    { value: '10', label: 'Aerospace Engineering' },
 ];
 
 export default function RegisterPage() {

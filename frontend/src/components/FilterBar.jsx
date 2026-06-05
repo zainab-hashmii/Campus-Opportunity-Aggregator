@@ -82,6 +82,10 @@ export default function FilterBar({ filters, onFilterChange, onSearch, searchTer
                                 { v: '4', l: 'Media Studies' },
                                 { v: '5', l: 'Mathematics' },
                                 { v: '6', l: 'Psychology' },
+                                { v: '7', l: 'Biotechnology' },
+                                { v: '8', l: 'Chemistry' },
+                                { v: '9', l: 'Mechanical Eng.' },
+                                { v: '10', l: 'Aerospace Eng.' },
                             ],
                         },
                     ].map(({ key, options }) => (
